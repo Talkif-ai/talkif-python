@@ -1,0 +1,32 @@
+name: Release
+
+# Publishes talkif to PyPI when a version tag (v*) is pushed.
+# Auth: PyPI Trusted Publishing (OIDC) — the project on pypi.org trusts this
+# repo + workflow file (+ environment "pypi"); no token secret is involved.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write # PyPI trusted publishing
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install poetry
+      - name: Check tag matches pyproject version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          ver="$(poetry version -s)"
+          [ "$tag" = "$ver" ] || { echo "tag v$tag != pyproject $ver"; exit 1; }
+      - run: poetry build
+      - uses: pypa/gh-action-pypi-publish@release/v1
