@@ -1,0 +1,6 @@
+# Files Fern must not overwrite on regeneration.
+README.md
+LICENSE
+CLAUDE.md
+.fernignore
+.github/workflows/
