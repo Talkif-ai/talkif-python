@@ -6,7 +6,7 @@ The public, **generated** Python SDK for the Talkif API, published to PyPI (talk
 one of two SDK repos (`Talkif-ai/talkif-node`, `Talkif-ai/talkif-python`).
 
 The source of truth is NOT here. It is `Talkif-ai/web` → `fern/`:
-`openapi.json` (curated public spec, synced from backend-rs), `overlays.yml`
+`openapi.json` (the curated public spec), `overlays.yml`
 (docs/SDK-only adjustments) and `generators.yml` (this SDK's generator config).
 Fern regenerates this repo from that folder and opens a pull request here.
 
@@ -14,13 +14,12 @@ Fern regenerates this repo from that folder and opens a pull request here.
 
 - **Do not hand-edit generated code.** It is overwritten on the next
   regeneration. If a method name, type, pagination or default is wrong, fix it
-  upstream: the OpenAPI annotation in `backend-rs` (preferred) or
-  `web/fern/overlays.yml`.
+  upstream: the OpenAPI definition (preferred) or `web/fern/overlays.yml`.
 - **Hand-written files must be listed in `.fernignore`** or Fern deletes them.
   Keep that list minimal: README, LICENSE, this file, release workflow, and any
   wrapper/helper code in a clearly named directory.
-- **This repo is public.** Never commit internal service names (backend-rs,
-  catflow), NATS subjects, infra details, ops identifiers, or unreleased
+- **This repo is public.** Never commit internal service or component names,
+  message-bus subjects, infrastructure details, ops identifiers, or unreleased
   endpoints. Public API surface only. Same rule as `Talkif-ai/webrtc-js`.
 - **Brand:** Talkif / Talkif-ai. Never the retired alternate spelling.
 - **No secrets.** Publishing uses trusted publishing (OIDC) from GitHub Actions;
