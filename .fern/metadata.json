@@ -1,0 +1,16 @@
+{
+  "cliVersion": "5.120.3",
+  "generatorName": "fernapi/fern-python-sdk",
+  "generatorVersion": "5.30.0",
+  "generatorConfig": {
+    "client": {
+      "class_name": "Talkif"
+    },
+    "package_name": "talkif",
+    "offset_semantics": "item-index"
+  },
+  "originGitCommit": "c5764cbcc41dbfa70cbcb43ee398c10efb32f4c8",
+  "originGitCommitIsDirty": false,
+  "invokedBy": "manual",
+  "sdkVersion": "0.0.4"
+}

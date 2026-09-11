@@ -1,4 +1,5 @@
-
-# local agent guidance, never published
-CLAUDE.md
-.claude/
+.mypy_cache/
+.ruff_cache/
+__pycache__/
+dist/
+poetry.toml
