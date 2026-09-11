@@ -86,7 +86,8 @@ class FlowDetailResponse(UniversalBaseModel):
 
     layout: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
-    Visual builder layout, if the flow was edited in the builder.
+    Visual builder layout (positions, viewport, UI state). Opaque to the
+    API: stored and returned as-is.
     """
 
     max_call_duration: typing_extensions.Annotated[

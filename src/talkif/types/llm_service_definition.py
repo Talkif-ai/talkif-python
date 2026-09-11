@@ -58,11 +58,13 @@ class LlmServiceDefinition(UniversalBaseModel):
         FieldMetadata(alias="reasoningEffort"),
         pydantic.Field(
             alias="reasoningEffort",
-            description="Reasoning/thinking effort level. Only accepted by models that support reasoning, and only with a value that model lists as valid; anything else is ignored.",
+            description="Reasoning/thinking effort level. Only accepted by models that support\nreasoning, and only with a value that model lists as valid; anything\nelse is ignored.",
         ),
     ] = None
     """
-    Reasoning/thinking effort level. Only accepted by models that support reasoning, and only with a value that model lists as valid; anything else is ignored.
+    Reasoning/thinking effort level. Only accepted by models that support
+    reasoning, and only with a value that model lists as valid; anything
+    else is ignored.
     """
 
     temperature: typing.Optional[float] = pydantic.Field(default=None)

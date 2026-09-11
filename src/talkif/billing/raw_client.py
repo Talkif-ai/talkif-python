@@ -749,7 +749,7 @@ class RawBillingClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[None]:
+    ) -> HttpResponse[PaginatedResponse]:
         """
         GET /api/v1/billing/transactions
 
@@ -766,7 +766,8 @@ class RawBillingClient:
 
         Returns
         -------
-        HttpResponse[None]
+        HttpResponse[PaginatedResponse]
+            Transaction history
         """
         _response = self._client_wrapper.httpx_client.request(
             "api/v1/billing/transactions",
@@ -779,7 +780,14 @@ class RawBillingClient:
         )
         try:
             if 200 <= _response.status_code < 300:
-                return HttpResponse(response=_response, data=None)
+                _data = typing.cast(
+                    PaginatedResponse,
+                    parse_obj_as(
+                        type_=PaginatedResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
@@ -1599,7 +1607,7 @@ class AsyncRawBillingClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[None]:
+    ) -> AsyncHttpResponse[PaginatedResponse]:
         """
         GET /api/v1/billing/transactions
 
@@ -1616,7 +1624,8 @@ class AsyncRawBillingClient:
 
         Returns
         -------
-        AsyncHttpResponse[None]
+        AsyncHttpResponse[PaginatedResponse]
+            Transaction history
         """
         _response = await self._client_wrapper.httpx_client.request(
             "api/v1/billing/transactions",
@@ -1629,7 +1638,14 @@ class AsyncRawBillingClient:
         )
         try:
             if 200 <= _response.status_code < 300:
-                return AsyncHttpResponse(response=_response, data=None)
+                _data = typing.cast(
+                    PaginatedResponse,
+                    parse_obj_as(
+                        type_=PaginatedResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),

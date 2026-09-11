@@ -10,7 +10,8 @@ from ..core.serialization import FieldMetadata
 
 class TranscriptMessageMetrics(UniversalBaseModel):
     """
-    Per-message latency and usage metrics. Captures the timing breakdown for debugging and analytics.
+    Per-message latency and usage metrics. Captures the timing breakdown for
+    debugging and analytics.
     """
 
     llm_completion_tokens: typing_extensions.Annotated[
@@ -85,13 +86,15 @@ class TranscriptMessageMetrics(UniversalBaseModel):
         FieldMetadata(alias="sttProcessingMs"),
         pydantic.Field(
             alias="sttProcessingMs",
-            description="Speech-to-text total processing time in milliseconds.\n\nDeprecated, read-only. Only present on older calls; new transcripts never carry it. Use `sttTtfbMs` (speech end → final transcript) for STT latency.",
+            description="Speech-to-text total processing time in milliseconds.\n\nDeprecated, read-only. Only present on older calls; new transcripts\nnever carry it. Use `sttTtfbMs` (speech end → final transcript) for\nSTT latency.",
         ),
     ] = None
     """
     Speech-to-text total processing time in milliseconds.
     
-    Deprecated, read-only. Only present on older calls; new transcripts never carry it. Use `sttTtfbMs` (speech end → final transcript) for STT latency.
+    Deprecated, read-only. Only present on older calls; new transcripts
+    never carry it. Use `sttTtfbMs` (speech end → final transcript) for
+    STT latency.
     """
 
     stt_ttfb_ms: typing_extensions.Annotated[

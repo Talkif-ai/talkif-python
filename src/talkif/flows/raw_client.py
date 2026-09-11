@@ -163,7 +163,9 @@ class RawFlowsClient:
             Description of the flow's purpose (max 1000 characters)
 
         layout : typing.Optional[typing.Dict[str, typing.Any]]
-            Visual builder layout (node positions, viewport). Opaque to the API; stored and returned as-is.
+            Visual builder layout (node positions, viewport). Opaque to the API.
+            When present it is stored as-is; when omitted, a default layout is
+            generated from the definition.
 
         max_call_duration : typing.Optional[MaxCallDurationSettings]
 
@@ -1321,7 +1323,9 @@ class AsyncRawFlowsClient:
             Description of the flow's purpose (max 1000 characters)
 
         layout : typing.Optional[typing.Dict[str, typing.Any]]
-            Visual builder layout (node positions, viewport). Opaque to the API; stored and returned as-is.
+            Visual builder layout (node positions, viewport). Opaque to the API.
+            When present it is stored as-is; when omitted, a default layout is
+            generated from the definition.
 
         max_call_duration : typing.Optional[MaxCallDurationSettings]
 
