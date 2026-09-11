@@ -12,7 +12,9 @@ class RequestSchema(UniversalBaseModel):
     """
     Structured HTTP request shape.
 
-    `pathParams`, `queryParams`, and `body` are each JSON Schema objects. Parameter names MUST be unique across the three — the name decides which HTTP location a value is sent in.
+    `pathParams`, `queryParams`, and `body` are each JSON Schema objects.
+    Parameter names MUST be unique across the three — the name decides which
+    HTTP location a value is sent in.
     """
 
     body: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)

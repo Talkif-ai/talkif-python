@@ -62,7 +62,7 @@ class RawSchedulesClient:
         SyncPager[ScheduleResponse, ScheduleListResponse]
             Schedule list
         """
-        offset = offset if offset is not None else 1
+        offset = offset if offset is not None else 0
 
         _response = self._client_wrapper.httpx_client.request(
             "api/v1/schedules",
@@ -906,7 +906,7 @@ class AsyncRawSchedulesClient:
         AsyncPager[ScheduleResponse, ScheduleListResponse]
             Schedule list
         """
-        offset = offset if offset is not None else 1
+        offset = offset if offset is not None else 0
 
         _response = await self._client_wrapper.httpx_client.request(
             "api/v1/schedules",

@@ -10,7 +10,10 @@ from ..core.serialization import FieldMetadata
 
 class TransitionDefinition(UniversalBaseModel):
     """
-    Agent transition definition. Defines a handoff from one agent to another, triggered by keywords in the conversation. Exposed to the LLM as a tool at runtime.
+    Agent transition definition
+
+    Defines a handoff from one agent to another, triggered by keywords
+    in the conversation. Exposed to the LLM as a tool at runtime.
     """
 
     keywords: typing.Optional[str] = pydantic.Field(default=None)

@@ -26,10 +26,10 @@ class VoiceDto(UniversalBaseModel):
     is_legacy: typing_extensions.Annotated[
         bool,
         FieldMetadata(alias="isLegacy"),
-        pydantic.Field(alias="isLegacy", description="True for voices no longer recommended for new flows."),
+        pydantic.Field(alias="isLegacy", description="Whether this is a legacy voice"),
     ]
     """
-    True for voices no longer recommended for new flows.
+    Whether this is a legacy voice
     """
 
     labels: typing.Dict[str, typing.Any] = pydantic.Field()

@@ -12,7 +12,10 @@ class UserIdleSettings(UniversalBaseModel):
     """
     User-idle hangup settings for a flow.
 
-    Sending this block fully replaces the flow's idle config. Omitting it on update leaves the existing config untouched; sending it with only `enabled` resets the other fields to their defaults. A flow that was never configured has idle hangup ON.
+    Sending this block fully replaces the flow's idle config. Omitting it on
+    update leaves the existing config untouched; sending it with only `enabled`
+    resets the other fields to their defaults. A flow that was never configured
+    has idle hangup ON.
     """
 
     enabled: bool = pydantic.Field()

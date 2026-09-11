@@ -262,9 +262,11 @@ class CallsClient:
         self, call_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> RecordingUrlResponse:
         """
-        Returns a time-limited presigned URL for recording playback. Fetch the audio directly from that URL.
+        Returns a time-limited presigned URL for recording playback. Fetch the
+        audio directly from that URL.
 
-        Requires the call to belong to the account and to have `recordingStatus = ready`; recording must be enabled for the account.
+        Requires the call to belong to the account and to have
+        `recordingStatus = ready`; recording must be enabled for the account.
 
         Parameters
         ----------
@@ -649,9 +651,11 @@ class AsyncCallsClient:
         self, call_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> RecordingUrlResponse:
         """
-        Returns a time-limited presigned URL for recording playback. Fetch the audio directly from that URL.
+        Returns a time-limited presigned URL for recording playback. Fetch the
+        audio directly from that URL.
 
-        Requires the call to belong to the account and to have `recordingStatus = ready`; recording must be enabled for the account.
+        Requires the call to belong to the account and to have
+        `recordingStatus = ready`; recording must be enabled for the account.
 
         Parameters
         ----------

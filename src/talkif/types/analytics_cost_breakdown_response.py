@@ -42,7 +42,12 @@ class AnalyticsCostBreakdownResponse(UniversalBaseModel):
     Cost breakdown by flow
     """
 
-    calls: typing.List[CallCostDetail]
+    calls: typing.List[CallCostDetail] = pydantic.Field()
+    """
+    Individual calls with per-category breakdown, for drill-down.
+    Ordered by created_at DESC, limited to the most recent calls in the period.
+    """
+
     end_date: typing_extensions.Annotated[
         dt.datetime,
         FieldMetadata(alias="endDate"),

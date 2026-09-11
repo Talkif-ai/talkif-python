@@ -12,7 +12,8 @@ class MaxCallDurationSettings(UniversalBaseModel):
     """
     Hard call-duration cap settings for a flow.
 
-    Omitting this block leaves the cap OFF. Sending it fully replaces the flow's cap config.
+    Omitting this block leaves the cap OFF. Sending it fully replaces the
+    flow's cap config.
     """
 
     enabled: bool = pydantic.Field()

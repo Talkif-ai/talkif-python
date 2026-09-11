@@ -87,7 +87,7 @@ class RawContactsClient:
         SyncPager[Contact, ContactListResponse]
             Contact list with pagination
         """
-        offset = offset if offset is not None else 1
+        offset = offset if offset is not None else 0
 
         _response = self._client_wrapper.httpx_client.request(
             "api/v1/contacts",
@@ -1110,7 +1110,7 @@ class RawContactsClient:
         SyncPager[CallResponse, CallListResponse]
             Contact call timeline
         """
-        offset = offset if offset is not None else 1
+        offset = offset if offset is not None else 0
 
         _response = self._client_wrapper.httpx_client.request(
             f"api/v1/contacts/{encode_path_param(contact_id)}/calls",
@@ -1586,7 +1586,7 @@ class AsyncRawContactsClient:
         AsyncPager[Contact, ContactListResponse]
             Contact list with pagination
         """
-        offset = offset if offset is not None else 1
+        offset = offset if offset is not None else 0
 
         _response = await self._client_wrapper.httpx_client.request(
             "api/v1/contacts",
@@ -2614,7 +2614,7 @@ class AsyncRawContactsClient:
         AsyncPager[CallResponse, CallListResponse]
             Contact call timeline
         """
-        offset = offset if offset is not None else 1
+        offset = offset if offset is not None else 0
 
         _response = await self._client_wrapper.httpx_client.request(
             f"api/v1/contacts/{encode_path_param(contact_id)}/calls",

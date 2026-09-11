@@ -15,9 +15,14 @@ from .transition_definition import TransitionDefinition
 
 class AgentDefinition(UniversalBaseModel):
     """
-    Agent node definition. Represents a conversational agent in the flow.
+    Agent node definition
 
-    The entry agent (`main_agent`) carries the call's `systemPrompt`; every agent carries its own `agentPrompt`. The system prompt is global to the call and persists across transitions, so non-entry agents must not set one (validation rejects it).
+    Represents a conversational agent in the flow.
+
+    The entry agent (`main_agent`) carries the call's `systemPrompt`; every
+    agent carries its own `agentPrompt`. The system prompt is global to the
+    call and persists across transitions, so non-entry agents must not set
+    one (validation rejects it).
     """
 
     agent_prompt: typing_extensions.Annotated[
@@ -25,7 +30,7 @@ class AgentDefinition(UniversalBaseModel):
         FieldMetadata(alias="agentPrompt"),
         pydantic.Field(
             alias="agentPrompt",
-            description="This agent's own instructions — THE canonical task field.\n\nIn force only while the flow sits on this agent. Static and dynamic\ncontent share this one field: text containing `{{handlebars}}` is\nresolved at call time, plain text passes through. There is no prompt\nnode, no edge, and no template indirection.\n\nThe `taskMessage` alias keeps pre-rename stored definitions\ndeserializable — see the note on `systemPrompt`.",
+            description="This agent's own instructions — THE canonical task field.\n\nIn force only while the flow sits on this agent. Static and dynamic\ncontent share this one field: text containing `{{handlebars}}` is\nresolved at call time, plain text passes through. There is no prompt\nnode, no edge, and no template indirection.\n\n`taskMessage` is accepted as a deprecated alias.",
         ),
     ] = None
     """
@@ -36,8 +41,7 @@ class AgentDefinition(UniversalBaseModel):
     resolved at call time, plain text passes through. There is no prompt
     node, no edge, and no template indirection.
     
-    The `taskMessage` alias keeps pre-rename stored definitions
-    deserializable — see the note on `systemPrompt`.
+    `taskMessage` is accepted as a deprecated alias.
     """
 
     functions: typing.Optional[typing.List[FunctionDefinition]] = pydantic.Field(default=None)
@@ -74,13 +78,17 @@ class AgentDefinition(UniversalBaseModel):
         FieldMetadata(alias="systemPrompt"),
         pydantic.Field(
             alias="systemPrompt",
-            description="The call's system prompt — set on the entry agent only.\n\nGlobal to the call and persistent across agent transitions; non-entry agents omit it and inherit it. Validation rejects a `systemPrompt` on a non-entry agent. `roleMessage` is accepted as a deprecated alias.",
+            description="The call's system prompt — set on the entry agent only.\n\nGlobal to the call and persistent across agent transitions, so\nnon-entry agents leave this `None` and inherit it. Validation rejects\na `systemPrompt` on a non-entry agent.\n\n`roleMessage` is accepted as a deprecated alias.",
         ),
     ] = None
     """
     The call's system prompt — set on the entry agent only.
     
-    Global to the call and persistent across agent transitions; non-entry agents omit it and inherit it. Validation rejects a `systemPrompt` on a non-entry agent. `roleMessage` is accepted as a deprecated alias.
+    Global to the call and persistent across agent transitions, so
+    non-entry agents leave this `None` and inherit it. Validation rejects
+    a `systemPrompt` on a non-entry agent.
+    
+    `roleMessage` is accepted as a deprecated alias.
     """
 
     transitions: typing.Optional[typing.List[TransitionDefinition]] = pydantic.Field(default=None)

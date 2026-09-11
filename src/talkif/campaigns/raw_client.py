@@ -75,7 +75,7 @@ class RawCampaignsClient:
         SyncPager[CampaignResponse, CampaignListResponse]
             Campaign list
         """
-        offset = offset if offset is not None else 1
+        offset = offset if offset is not None else 0
 
         _response = self._client_wrapper.httpx_client.request(
             "api/v1/campaigns",
@@ -830,7 +830,7 @@ class RawCampaignsClient:
         SyncPager[CampaignContactResponse, CampaignContactListResponse]
             Campaign contacts list
         """
-        offset = offset if offset is not None else 1
+        offset = offset if offset is not None else 0
 
         _response = self._client_wrapper.httpx_client.request(
             f"api/v1/campaigns/{encode_path_param(campaign_id)}/contacts",
@@ -2013,7 +2013,7 @@ class AsyncRawCampaignsClient:
         AsyncPager[CampaignResponse, CampaignListResponse]
             Campaign list
         """
-        offset = offset if offset is not None else 1
+        offset = offset if offset is not None else 0
 
         _response = await self._client_wrapper.httpx_client.request(
             "api/v1/campaigns",
@@ -2771,7 +2771,7 @@ class AsyncRawCampaignsClient:
         AsyncPager[CampaignContactResponse, CampaignContactListResponse]
             Campaign contacts list
         """
-        offset = offset if offset is not None else 1
+        offset = offset if offset is not None else 0
 
         _response = await self._client_wrapper.httpx_client.request(
             f"api/v1/campaigns/{encode_path_param(campaign_id)}/contacts",

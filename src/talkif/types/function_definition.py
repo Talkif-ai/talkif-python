@@ -10,11 +10,20 @@ from ..core.serialization import FieldMetadata
 
 class FunctionDefinition(UniversalBaseModel):
     """
-    Tool function definition. Describes the **interface** of a function an agent can call — what it does, not where it executes.
+    Tool function definition
+
+    Represents the **interface** of a callable function available to an agent.
+    Describes WHAT the function does, not WHERE it executes.
 
     Function types (unknown types are rejected):
-    - `"builtin"`: platform-provided functions. The only valid name is `end_call`. Builtins ignore LLM-supplied arguments, so `properties`/`required` are typically empty.
-    - `"http_request"`: user-defined HTTP webhook functions. Requires `config.functionId` referencing a flow function; headers and secrets are stored server-side and never returned by the API.
+    - `"builtin"`: platform-provided functions. The only valid name is
+      `end_call`. Builtins ignore LLM-supplied arguments, so
+      `properties`/`required` are typically empty.
+    - `"http_request"`: user-defined HTTP webhook functions. Requires
+      `config.functionId` referencing a flow function; headers and secrets are
+      stored server-side and never returned by the API.
+
+    Transition functions (generated from `transitions[]`) are not stored here.
     """
 
     config: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
@@ -41,11 +50,12 @@ class FunctionDefinition(UniversalBaseModel):
         FieldMetadata(alias="paramBindings"),
         pydantic.Field(
             alias="paramBindings",
-            description='Per-parameter source bindings, resolved at publish time from the referenced flow function. Only populated for `http_request` functions.\n\nShape: `{ "paramName": { "source": "llm|call_context|static", ... } }`\n\nRead-only in the published definition; edit bindings on the flow function.',
+            description='Per-parameter source bindings, resolved at publish time from the\nreferenced flow function. Only populated for `http_request` functions.\n\nShape: `{ "paramName": { "source": "llm|call_context|static", ... } }`\n\nRead-only in the published definition; edit bindings on the flow function.',
         ),
     ] = None
     """
-    Per-parameter source bindings, resolved at publish time from the referenced flow function. Only populated for `http_request` functions.
+    Per-parameter source bindings, resolved at publish time from the
+    referenced flow function. Only populated for `http_request` functions.
     
     Shape: `{ "paramName": { "source": "llm|call_context|static", ... } }`
     

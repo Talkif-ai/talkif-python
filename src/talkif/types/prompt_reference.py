@@ -10,7 +10,8 @@ from ..core.serialization import FieldMetadata
 
 class PromptReference(UniversalBaseModel):
     """
-    Deprecated prompt wrapper, accepted for backwards compatibility. New definitions put the prompt inline in `AgentDefinition.agentPrompt`.
+    Deprecated prompt wrapper, accepted for backwards compatibility. New
+    definitions put the prompt inline in `AgentDefinition.agentPrompt`.
     """
 
     content: typing.Optional[str] = pydantic.Field(default=None)
