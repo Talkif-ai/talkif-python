@@ -9,8 +9,10 @@
     "package_name": "talkif",
     "offset_semantics": "item-index"
   },
-  "originGitCommit": "c5764cbcc41dbfa70cbcb43ee398c10efb32f4c8",
+  "originGitCommit": "11b36c2ad0ea8675787de49995fc7175aef1066a",
   "originGitCommitIsDirty": false,
-  "invokedBy": "manual",
-  "sdkVersion": "0.0.4"
+  "invokedBy": "ci",
+  "requestedVersion": "0.1.0",
+  "ciProvider": "github",
+  "sdkVersion": "0.1.0"
 }

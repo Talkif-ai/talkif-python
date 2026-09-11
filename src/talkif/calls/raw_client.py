@@ -647,9 +647,11 @@ class RawCallsClient:
         self, call_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[RecordingUrlResponse]:
         """
-        Returns a time-limited presigned URL for recording playback. Fetch the audio directly from that URL.
+        Returns a time-limited presigned URL for recording playback. Fetch the
+        audio directly from that URL.
 
-        Requires the call to belong to the account and to have `recordingStatus = ready`; recording must be enabled for the account.
+        Requires the call to belong to the account and to have
+        `recordingStatus = ready`; recording must be enabled for the account.
 
         Parameters
         ----------
@@ -1595,9 +1597,11 @@ class AsyncRawCallsClient:
         self, call_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[RecordingUrlResponse]:
         """
-        Returns a time-limited presigned URL for recording playback. Fetch the audio directly from that URL.
+        Returns a time-limited presigned URL for recording playback. Fetch the
+        audio directly from that URL.
 
-        Requires the call to belong to the account and to have `recordingStatus = ready`; recording must be enabled for the account.
+        Requires the call to belong to the account and to have
+        `recordingStatus = ready`; recording must be enabled for the account.
 
         Parameters
         ----------

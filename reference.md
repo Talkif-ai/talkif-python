@@ -573,7 +573,7 @@ client.billing.get_invoice(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/talkif/billing/client.py">get_transaction_history</a>(...)</code></summary>
+<details><summary><code>client.billing.<a href="src/talkif/billing/client.py">get_transaction_history</a>(...) -> PaginatedResponse</code></summary>
 <dl>
 <dd>
 
@@ -1174,9 +1174,11 @@ client.calls.analyze_call(
 <dl>
 <dd>
 
-Returns a time-limited presigned URL for recording playback. Fetch the audio directly from that URL.
+Returns a time-limited presigned URL for recording playback. Fetch the
+audio directly from that URL.
 
-Requires the call to belong to the account and to have `recordingStatus = ready`; recording must be enabled for the account.
+Requires the call to belong to the account and to have
+`recordingStatus = ready`; recording must be enabled for the account.
 </dd>
 </dl>
 </dd>
@@ -5276,7 +5278,11 @@ client.flows.create_flow(
 <dl>
 <dd>
 
-**layout:** `typing.Optional[typing.Dict[str, typing.Any]]` — Visual builder layout (node positions, viewport). Opaque to the API; stored and returned as-is.
+**layout:** `typing.Optional[typing.Dict[str, typing.Any]]` 
+
+Visual builder layout (node positions, viewport). Opaque to the API.
+When present it is stored as-is; when omitted, a default layout is
+generated from the definition.
     
 </dd>
 </dl>

@@ -48,7 +48,9 @@ class FlowTemplate(UniversalBaseModel):
 
     definition: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
-    Flow definition the template instantiates.
+    Runtime FlowDefinition (initialNode + services + nodes). This is what
+    instantiation copies into the new flow's definition. Null on legacy
+    templates that only carry builder nodes/edges.
     """
 
     description: typing.Optional[str] = pydantic.Field(default=None)

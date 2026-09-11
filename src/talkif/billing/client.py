@@ -320,7 +320,7 @@ class BillingClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> None:
+    ) -> PaginatedResponse:
         """
         GET /api/v1/billing/transactions
 
@@ -337,7 +337,8 @@ class BillingClient:
 
         Returns
         -------
-        None
+        PaginatedResponse
+            Transaction history
 
         Examples
         --------
@@ -746,7 +747,7 @@ class AsyncBillingClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> None:
+    ) -> PaginatedResponse:
         """
         GET /api/v1/billing/transactions
 
@@ -763,7 +764,8 @@ class AsyncBillingClient:
 
         Returns
         -------
-        None
+        PaginatedResponse
+            Transaction history
 
         Examples
         --------

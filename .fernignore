@@ -3,3 +3,6 @@ README.md
 LICENSE
 .fernignore
 .github/workflows/
+.fern/replay.lock
+.fern/replay.yml
+.gitattributes
