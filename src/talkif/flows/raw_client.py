@@ -21,9 +21,9 @@ from ..errors.unauthorized_error import UnauthorizedError
 from ..types.error_response import ErrorResponse
 from ..types.flow_definition import FlowDefinition
 from ..types.flow_detail_response import FlowDetailResponse
+from ..types.flow_list_response import FlowListResponse
 from ..types.flow_version_detail_response import FlowVersionDetailResponse
 from ..types.max_call_duration_settings import MaxCallDurationSettings
-from ..types.paginated_response import PaginatedResponse
 from ..types.publish_flow_response import PublishFlowResponse
 from ..types.rollback_response import RollbackResponse
 from ..types.user_idle_settings import UserIdleSettings
@@ -38,7 +38,13 @@ class RawFlowsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def list_flows(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[PaginatedResponse]:
+    def list_flows(
+        self,
+        *,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[FlowListResponse]:
         """
         GET /api/v1/flows
 
@@ -46,25 +52,35 @@ class RawFlowsClient:
 
         Parameters
         ----------
+        limit : typing.Optional[int]
+            Max items to return (1-100, default 20)
+
+        offset : typing.Optional[int]
+            Items to skip (default 0)
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[PaginatedResponse]
+        HttpResponse[FlowListResponse]
             Paginated list of flows with connected phone numbers
         """
         _response = self._client_wrapper.httpx_client.request(
             "api/v1/flows",
             method="GET",
+            params={
+                "limit": limit,
+                "offset": offset,
+            },
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    PaginatedResponse,
+                    FlowListResponse,
                     parse_obj_as(
-                        type_=PaginatedResponse,  # type: ignore
+                        type_=FlowListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1197,8 +1213,12 @@ class AsyncRawFlowsClient:
         self._client_wrapper = client_wrapper
 
     async def list_flows(
-        self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[PaginatedResponse]:
+        self,
+        *,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[FlowListResponse]:
         """
         GET /api/v1/flows
 
@@ -1206,25 +1226,35 @@ class AsyncRawFlowsClient:
 
         Parameters
         ----------
+        limit : typing.Optional[int]
+            Max items to return (1-100, default 20)
+
+        offset : typing.Optional[int]
+            Items to skip (default 0)
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[PaginatedResponse]
+        AsyncHttpResponse[FlowListResponse]
             Paginated list of flows with connected phone numbers
         """
         _response = await self._client_wrapper.httpx_client.request(
             "api/v1/flows",
             method="GET",
+            params={
+                "limit": limit,
+                "offset": offset,
+            },
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    PaginatedResponse,
+                    FlowListResponse,
                     parse_obj_as(
-                        type_=PaginatedResponse,  # type: ignore
+                        type_=FlowListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

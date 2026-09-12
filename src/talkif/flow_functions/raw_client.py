@@ -19,8 +19,8 @@ from ..errors.not_found_error import NotFoundError
 from ..errors.too_many_requests_error import TooManyRequestsError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.error_response import ErrorResponse
+from ..types.flow_function_list_response import FlowFunctionListResponse
 from ..types.flow_function_response import FlowFunctionResponse
-from ..types.paginated_response import PaginatedResponse
 from ..types.request_schema import RequestSchema
 from pydantic import ValidationError
 
@@ -38,7 +38,7 @@ class RawFlowFunctionsClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[PaginatedResponse]:
+    ) -> HttpResponse[FlowFunctionListResponse]:
         """
         GET /api/v1/flow-functions
 
@@ -55,7 +55,7 @@ class RawFlowFunctionsClient:
 
         Returns
         -------
-        HttpResponse[PaginatedResponse]
+        HttpResponse[FlowFunctionListResponse]
             Paginated list of flow functions
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -70,9 +70,9 @@ class RawFlowFunctionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    PaginatedResponse,
+                    FlowFunctionListResponse,
                     parse_obj_as(
-                        type_=PaginatedResponse,  # type: ignore
+                        type_=FlowFunctionListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -634,7 +634,7 @@ class AsyncRawFlowFunctionsClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[PaginatedResponse]:
+    ) -> AsyncHttpResponse[FlowFunctionListResponse]:
         """
         GET /api/v1/flow-functions
 
@@ -651,7 +651,7 @@ class AsyncRawFlowFunctionsClient:
 
         Returns
         -------
-        AsyncHttpResponse[PaginatedResponse]
+        AsyncHttpResponse[FlowFunctionListResponse]
             Paginated list of flow functions
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -666,9 +666,9 @@ class AsyncRawFlowFunctionsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    PaginatedResponse,
+                    FlowFunctionListResponse,
                     parse_obj_as(
-                        type_=PaginatedResponse,  # type: ignore
+                        type_=FlowFunctionListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

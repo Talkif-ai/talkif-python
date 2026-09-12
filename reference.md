@@ -63,7 +63,7 @@ client.billing.get_balance_summary()
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/talkif/billing/client.py">list_charges</a>(...) -> PaginatedResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/talkif/billing/client.py">list_charges</a>(...) -> ChargeListResponse</code></summary>
 <dl>
 <dd>
 
@@ -421,7 +421,7 @@ client.billing.get_billing_call_cost_breakdown(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/talkif/billing/client.py">list_invoices</a>(...) -> PaginatedResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/talkif/billing/client.py">list_invoices</a>(...) -> InvoiceListResponse</code></summary>
 <dl>
 <dd>
 
@@ -573,7 +573,7 @@ client.billing.get_invoice(
 </dl>
 </details>
 
-<details><summary><code>client.billing.<a href="src/talkif/billing/client.py">get_transaction_history</a>(...) -> PaginatedResponse</code></summary>
+<details><summary><code>client.billing.<a href="src/talkif/billing/client.py">get_transaction_history</a>(...) -> BalanceTransactionListResponse</code></summary>
 <dl>
 <dd>
 
@@ -874,7 +874,7 @@ client.calls.make_call(
 </dl>
 </details>
 
-<details><summary><code>client.calls.<a href="src/talkif/calls/client.py">get_active_calls</a>() -> typing.List[CallResponse]</code></summary>
+<details><summary><code>client.calls.<a href="src/talkif/calls/client.py">get_active_calls</a>(...) -> CallListResponse</code></summary>
 <dl>
 <dd>
 
@@ -925,6 +925,22 @@ client.calls.get_active_calls()
 <dl>
 <dd>
 
+**limit:** `typing.Optional[int]` — Max items to return (1-100, default 10)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Items to skip (default 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -937,7 +953,7 @@ client.calls.get_active_calls()
 </dl>
 </details>
 
-<details><summary><code>client.calls.<a href="src/talkif/calls/client.py">get_call_history</a>() -> CallListResponse</code></summary>
+<details><summary><code>client.calls.<a href="src/talkif/calls/client.py">get_call_history</a>(...) -> CallListResponse</code></summary>
 <dl>
 <dd>
 
@@ -972,7 +988,10 @@ client = Talkif(
     environment=TalkifEnvironment.PRODUCTION,
 )
 
-client.calls.get_call_history()
+client.calls.get_call_history(
+    limit=1,
+    offset=1,
+)
 
 ```
 </dd>
@@ -984,6 +1003,130 @@ client.calls.get_call_history()
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**limit:** `int` — Maximum number of items to return (default: 20, max: 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `int` — Number of items to skip for pagination (default: 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_date:** `typing.Optional[datetime.datetime]` — Only include calls after this timestamp (inclusive)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_date:** `typing.Optional[datetime.datetime]` — Only include calls before this timestamp (inclusive)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[CallStatus]` — Filter by call status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**direction:** `typing.Optional[CallDirection]` — Filter by call direction
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**source:** `typing.Optional[CallSource]` — Filter by call source (direct, scheduled, campaign)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phone_number:** `typing.Optional[str]` — Filter by phone number — matches either the from or to number (E.164)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_lead:** `typing.Optional[bool]` — Filter by whether the call was triggered by a Meta lead form (true = lead-driven only)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**flow_id:** `typing.Optional[str]` — Filter by flow ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**contact_id:** `typing.Optional[str]` — Filter by contact ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**schedule_id:** `typing.Optional[str]` — Filter by schedule ID (for scheduled calls)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**campaign_id:** `typing.Optional[str]` — Filter by campaign ID (for campaign calls)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**provider_type:** `typing.Optional[CallProviderType]` — Filter by telephony provider type (channel)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `typing.Optional[str]` 
+
+Free-text search across the contact name and the raw from/to phone
+numbers (case-insensitive substring). Matches calls to/from numbers that
+were never saved as contacts.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -4369,7 +4512,7 @@ client.errors.error_catalog()
 </details>
 
 ## Flow Functions
-<details><summary><code>client.flow_functions.<a href="src/talkif/flow_functions/client.py">list_flow_functions</a>(...) -> PaginatedResponse</code></summary>
+<details><summary><code>client.flow_functions.<a href="src/talkif/flow_functions/client.py">list_flow_functions</a>(...) -> FlowFunctionListResponse</code></summary>
 <dl>
 <dd>
 
@@ -4856,7 +4999,7 @@ client.flow_functions.delete_flow_function(
 </details>
 
 ## Flow Templates
-<details><summary><code>client.flow_templates.<a href="src/talkif/flow_templates/client.py">list_system_templates</a>(...) -> PaginatedResponse</code></summary>
+<details><summary><code>client.flow_templates.<a href="src/talkif/flow_templates/client.py">list_system_templates</a>(...) -> FlowTemplateListResponse</code></summary>
 <dl>
 <dd>
 
@@ -5117,7 +5260,7 @@ client.flow_templates.instantiate_template(
 </details>
 
 ## Flows
-<details><summary><code>client.flows.<a href="src/talkif/flows/client.py">list_flows</a>() -> PaginatedResponse</code></summary>
+<details><summary><code>client.flows.<a href="src/talkif/flows/client.py">list_flows</a>(...) -> FlowListResponse</code></summary>
 <dl>
 <dd>
 
@@ -5166,6 +5309,22 @@ client.flows.list_flows()
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Max items to return (1-100, default 20)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Items to skip (default 0)
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -6255,7 +6414,7 @@ client.ai_models.list_tts_voices()
 </details>
 
 ## Phone Numbers
-<details><summary><code>client.phone_numbers.<a href="src/talkif/phone_numbers/client.py">list_phone_numbers</a>(...) -> typing.List[PhoneNumberResponse]</code></summary>
+<details><summary><code>client.phone_numbers.<a href="src/talkif/phone_numbers/client.py">list_phone_numbers</a>(...) -> PhoneNumberListResponse</code></summary>
 <dl>
 <dd>
 
@@ -7116,7 +7275,7 @@ client.phone_numbers.disconnect_flow(
 </details>
 
 ## Phone Providers
-<details><summary><code>client.phone_providers.<a href="src/talkif/phone_providers/client.py">list_phone_providers</a>(...) -> typing.List[PhoneProviderResponse]</code></summary>
+<details><summary><code>client.phone_providers.<a href="src/talkif/phone_providers/client.py">list_phone_providers</a>(...) -> PhoneProviderListResponse</code></summary>
 <dl>
 <dd>
 

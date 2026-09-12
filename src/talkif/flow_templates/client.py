@@ -5,7 +5,7 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.flow_template import FlowTemplate
-from ..types.paginated_response import PaginatedResponse
+from ..types.flow_template_list_response import FlowTemplateListResponse
 from .raw_client import AsyncRawFlowTemplatesClient, RawFlowTemplatesClient
 
 # this is used as the default value for optional parameters
@@ -34,7 +34,7 @@ class FlowTemplatesClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> PaginatedResponse:
+    ) -> FlowTemplateListResponse:
         """
         GET /api/v1/flow-templates
 
@@ -54,7 +54,7 @@ class FlowTemplatesClient:
 
         Returns
         -------
-        PaginatedResponse
+        FlowTemplateListResponse
             Paginated list of system-wide flow templates
 
         Examples
@@ -178,7 +178,7 @@ class AsyncFlowTemplatesClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> PaginatedResponse:
+    ) -> FlowTemplateListResponse:
         """
         GET /api/v1/flow-templates
 
@@ -198,7 +198,7 @@ class AsyncFlowTemplatesClient:
 
         Returns
         -------
-        PaginatedResponse
+        FlowTemplateListResponse
             Paginated list of system-wide flow templates
 
         Examples

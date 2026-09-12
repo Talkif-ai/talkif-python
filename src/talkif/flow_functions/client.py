@@ -4,8 +4,8 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.flow_function_list_response import FlowFunctionListResponse
 from ..types.flow_function_response import FlowFunctionResponse
-from ..types.paginated_response import PaginatedResponse
 from ..types.request_schema import RequestSchema
 from .raw_client import AsyncRawFlowFunctionsClient, RawFlowFunctionsClient
 
@@ -34,7 +34,7 @@ class FlowFunctionsClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> PaginatedResponse:
+    ) -> FlowFunctionListResponse:
         """
         GET /api/v1/flow-functions
 
@@ -51,7 +51,7 @@ class FlowFunctionsClient:
 
         Returns
         -------
-        PaginatedResponse
+        FlowFunctionListResponse
             Paginated list of flow functions
 
         Examples
@@ -298,7 +298,7 @@ class AsyncFlowFunctionsClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> PaginatedResponse:
+    ) -> FlowFunctionListResponse:
         """
         GET /api/v1/flow-functions
 
@@ -315,7 +315,7 @@ class AsyncFlowFunctionsClient:
 
         Returns
         -------
-        PaginatedResponse
+        FlowFunctionListResponse
             Paginated list of flow functions
 
         Examples
