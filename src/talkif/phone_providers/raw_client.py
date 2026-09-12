@@ -16,6 +16,7 @@ from ..errors.not_found_error import NotFoundError
 from ..errors.too_many_requests_error import TooManyRequestsError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.error_response import ErrorResponse
+from ..types.phone_provider_list_response import PhoneProviderListResponse
 from ..types.phone_provider_response import PhoneProviderResponse
 from pydantic import ValidationError
 
@@ -30,7 +31,7 @@ class RawPhoneProvidersClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[typing.List[PhoneProviderResponse]]:
+    ) -> HttpResponse[PhoneProviderListResponse]:
         """
         GET /api/v1/phone/providers
 
@@ -47,7 +48,7 @@ class RawPhoneProvidersClient:
 
         Returns
         -------
-        HttpResponse[typing.List[PhoneProviderResponse]]
+        HttpResponse[PhoneProviderListResponse]
             List of providers
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -62,9 +63,9 @@ class RawPhoneProvidersClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    typing.List[PhoneProviderResponse],
+                    PhoneProviderListResponse,
                     parse_obj_as(
-                        type_=typing.List[PhoneProviderResponse],  # type: ignore
+                        type_=PhoneProviderListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -231,7 +232,7 @@ class AsyncRawPhoneProvidersClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[typing.List[PhoneProviderResponse]]:
+    ) -> AsyncHttpResponse[PhoneProviderListResponse]:
         """
         GET /api/v1/phone/providers
 
@@ -248,7 +249,7 @@ class AsyncRawPhoneProvidersClient:
 
         Returns
         -------
-        AsyncHttpResponse[typing.List[PhoneProviderResponse]]
+        AsyncHttpResponse[PhoneProviderListResponse]
             List of providers
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -263,9 +264,9 @@ class AsyncRawPhoneProvidersClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    typing.List[PhoneProviderResponse],
+                    PhoneProviderListResponse,
                     parse_obj_as(
-                        type_=typing.List[PhoneProviderResponse],  # type: ignore
+                        type_=PhoneProviderListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

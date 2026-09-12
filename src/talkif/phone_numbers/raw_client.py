@@ -20,6 +20,7 @@ from ..errors.too_many_requests_error import TooManyRequestsError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.available_phone_number import AvailablePhoneNumber
 from ..types.error_response import ErrorResponse
+from ..types.phone_number_list_response import PhoneNumberListResponse
 from ..types.phone_number_pricing import PhoneNumberPricing
 from ..types.phone_number_response import PhoneNumberResponse
 from pydantic import ValidationError
@@ -38,7 +39,7 @@ class RawPhoneNumbersClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[typing.List[PhoneNumberResponse]]:
+    ) -> HttpResponse[PhoneNumberListResponse]:
         """
         GET /api/v1/phone/numbers
 
@@ -55,7 +56,7 @@ class RawPhoneNumbersClient:
 
         Returns
         -------
-        HttpResponse[typing.List[PhoneNumberResponse]]
+        HttpResponse[PhoneNumberListResponse]
             List of phone numbers
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -70,9 +71,9 @@ class RawPhoneNumbersClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    typing.List[PhoneNumberResponse],
+                    PhoneNumberListResponse,
                     parse_obj_as(
-                        type_=typing.List[PhoneNumberResponse],  # type: ignore
+                        type_=PhoneNumberListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1130,7 +1131,7 @@ class AsyncRawPhoneNumbersClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[typing.List[PhoneNumberResponse]]:
+    ) -> AsyncHttpResponse[PhoneNumberListResponse]:
         """
         GET /api/v1/phone/numbers
 
@@ -1147,7 +1148,7 @@ class AsyncRawPhoneNumbersClient:
 
         Returns
         -------
-        AsyncHttpResponse[typing.List[PhoneNumberResponse]]
+        AsyncHttpResponse[PhoneNumberListResponse]
             List of phone numbers
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1162,9 +1163,9 @@ class AsyncRawPhoneNumbersClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    typing.List[PhoneNumberResponse],
+                    PhoneNumberListResponse,
                     parse_obj_as(
-                        type_=typing.List[PhoneNumberResponse],  # type: ignore
+                        type_=PhoneNumberListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
