@@ -18,7 +18,7 @@ from ..errors.too_many_requests_error import TooManyRequestsError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.error_response import ErrorResponse
 from ..types.flow_template import FlowTemplate
-from ..types.paginated_response import PaginatedResponse
+from ..types.flow_template_list_response import FlowTemplateListResponse
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
@@ -36,7 +36,7 @@ class RawFlowTemplatesClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[PaginatedResponse]:
+    ) -> HttpResponse[FlowTemplateListResponse]:
         """
         GET /api/v1/flow-templates
 
@@ -56,7 +56,7 @@ class RawFlowTemplatesClient:
 
         Returns
         -------
-        HttpResponse[PaginatedResponse]
+        HttpResponse[FlowTemplateListResponse]
             Paginated list of system-wide flow templates
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -72,9 +72,9 @@ class RawFlowTemplatesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    PaginatedResponse,
+                    FlowTemplateListResponse,
                     parse_obj_as(
-                        type_=PaginatedResponse,  # type: ignore
+                        type_=FlowTemplateListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -290,7 +290,7 @@ class AsyncRawFlowTemplatesClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[PaginatedResponse]:
+    ) -> AsyncHttpResponse[FlowTemplateListResponse]:
         """
         GET /api/v1/flow-templates
 
@@ -310,7 +310,7 @@ class AsyncRawFlowTemplatesClient:
 
         Returns
         -------
-        AsyncHttpResponse[PaginatedResponse]
+        AsyncHttpResponse[FlowTemplateListResponse]
             Paginated list of system-wide flow templates
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -326,9 +326,9 @@ class AsyncRawFlowTemplatesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    PaginatedResponse,
+                    FlowTemplateListResponse,
                     parse_obj_as(
-                        type_=PaginatedResponse,  # type: ignore
+                        type_=FlowTemplateListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

@@ -5,6 +5,7 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.available_phone_number import AvailablePhoneNumber
+from ..types.phone_number_list_response import PhoneNumberListResponse
 from ..types.phone_number_pricing import PhoneNumberPricing
 from ..types.phone_number_response import PhoneNumberResponse
 from .raw_client import AsyncRawPhoneNumbersClient, RawPhoneNumbersClient
@@ -34,7 +35,7 @@ class PhoneNumbersClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.List[PhoneNumberResponse]:
+    ) -> PhoneNumberListResponse:
         """
         GET /api/v1/phone/numbers
 
@@ -51,7 +52,7 @@ class PhoneNumbersClient:
 
         Returns
         -------
-        typing.List[PhoneNumberResponse]
+        PhoneNumberListResponse
             List of phone numbers
 
         Examples
@@ -487,7 +488,7 @@ class AsyncPhoneNumbersClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.List[PhoneNumberResponse]:
+    ) -> PhoneNumberListResponse:
         """
         GET /api/v1/phone/numbers
 
@@ -504,7 +505,7 @@ class AsyncPhoneNumbersClient:
 
         Returns
         -------
-        typing.List[PhoneNumberResponse]
+        PhoneNumberListResponse
             List of phone numbers
 
         Examples

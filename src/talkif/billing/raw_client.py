@@ -17,13 +17,15 @@ from ..errors.too_many_requests_error import TooManyRequestsError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.analytics_cost_breakdown_response import AnalyticsCostBreakdownResponse
 from ..types.balance_summary_response import BalanceSummaryResponse
+from ..types.balance_transaction_list_response import BalanceTransactionListResponse
 from ..types.call_cost_breakdown_response import CallCostBreakdownResponse
 from ..types.charge_detail_response import ChargeDetailResponse
+from ..types.charge_list_response import ChargeListResponse
 from ..types.charge_status import ChargeStatus
 from ..types.charge_type_db import ChargeTypeDb
 from ..types.error_response import ErrorResponse
+from ..types.invoice_list_response import InvoiceListResponse
 from ..types.invoice_response import InvoiceResponse
-from ..types.paginated_response import PaginatedResponse
 from ..types.public_pricing_response import PublicPricingResponse
 from pydantic import ValidationError
 
@@ -126,7 +128,7 @@ class RawBillingClient:
         start_date: typing.Optional[str] = None,
         end_date: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[PaginatedResponse]:
+    ) -> HttpResponse[ChargeListResponse]:
         """
         Paginated, filterable charge history for an account.
         Returns charges with entity context (phone number, flow name, contact name)
@@ -157,7 +159,7 @@ class RawBillingClient:
 
         Returns
         -------
-        HttpResponse[PaginatedResponse]
+        HttpResponse[ChargeListResponse]
             Paginated charge history
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -176,9 +178,9 @@ class RawBillingClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    PaginatedResponse,
+                    ChargeListResponse,
                     parse_obj_as(
-                        type_=PaginatedResponse,  # type: ignore
+                        type_=ChargeListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -553,7 +555,7 @@ class RawBillingClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[PaginatedResponse]:
+    ) -> HttpResponse[InvoiceListResponse]:
         """
         GET /api/v1/billing/invoices
 
@@ -570,7 +572,7 @@ class RawBillingClient:
 
         Returns
         -------
-        HttpResponse[PaginatedResponse]
+        HttpResponse[InvoiceListResponse]
             Paginated invoice list
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -585,9 +587,9 @@ class RawBillingClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    PaginatedResponse,
+                    InvoiceListResponse,
                     parse_obj_as(
-                        type_=PaginatedResponse,  # type: ignore
+                        type_=InvoiceListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -749,7 +751,7 @@ class RawBillingClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[PaginatedResponse]:
+    ) -> HttpResponse[BalanceTransactionListResponse]:
         """
         GET /api/v1/billing/transactions
 
@@ -766,7 +768,7 @@ class RawBillingClient:
 
         Returns
         -------
-        HttpResponse[PaginatedResponse]
+        HttpResponse[BalanceTransactionListResponse]
             Transaction history
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -781,9 +783,9 @@ class RawBillingClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    PaginatedResponse,
+                    BalanceTransactionListResponse,
                     parse_obj_as(
-                        type_=PaginatedResponse,  # type: ignore
+                        type_=BalanceTransactionListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -984,7 +986,7 @@ class AsyncRawBillingClient:
         start_date: typing.Optional[str] = None,
         end_date: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[PaginatedResponse]:
+    ) -> AsyncHttpResponse[ChargeListResponse]:
         """
         Paginated, filterable charge history for an account.
         Returns charges with entity context (phone number, flow name, contact name)
@@ -1015,7 +1017,7 @@ class AsyncRawBillingClient:
 
         Returns
         -------
-        AsyncHttpResponse[PaginatedResponse]
+        AsyncHttpResponse[ChargeListResponse]
             Paginated charge history
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1034,9 +1036,9 @@ class AsyncRawBillingClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    PaginatedResponse,
+                    ChargeListResponse,
                     parse_obj_as(
-                        type_=PaginatedResponse,  # type: ignore
+                        type_=ChargeListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1411,7 +1413,7 @@ class AsyncRawBillingClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[PaginatedResponse]:
+    ) -> AsyncHttpResponse[InvoiceListResponse]:
         """
         GET /api/v1/billing/invoices
 
@@ -1428,7 +1430,7 @@ class AsyncRawBillingClient:
 
         Returns
         -------
-        AsyncHttpResponse[PaginatedResponse]
+        AsyncHttpResponse[InvoiceListResponse]
             Paginated invoice list
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1443,9 +1445,9 @@ class AsyncRawBillingClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    PaginatedResponse,
+                    InvoiceListResponse,
                     parse_obj_as(
-                        type_=PaginatedResponse,  # type: ignore
+                        type_=InvoiceListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1607,7 +1609,7 @@ class AsyncRawBillingClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[PaginatedResponse]:
+    ) -> AsyncHttpResponse[BalanceTransactionListResponse]:
         """
         GET /api/v1/billing/transactions
 
@@ -1624,7 +1626,7 @@ class AsyncRawBillingClient:
 
         Returns
         -------
-        AsyncHttpResponse[PaginatedResponse]
+        AsyncHttpResponse[BalanceTransactionListResponse]
             Transaction history
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1639,9 +1641,9 @@ class AsyncRawBillingClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    PaginatedResponse,
+                    BalanceTransactionListResponse,
                     parse_obj_as(
-                        type_=PaginatedResponse,  # type: ignore
+                        type_=BalanceTransactionListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

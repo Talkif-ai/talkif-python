@@ -6,12 +6,14 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.analytics_cost_breakdown_response import AnalyticsCostBreakdownResponse
 from ..types.balance_summary_response import BalanceSummaryResponse
+from ..types.balance_transaction_list_response import BalanceTransactionListResponse
 from ..types.call_cost_breakdown_response import CallCostBreakdownResponse
 from ..types.charge_detail_response import ChargeDetailResponse
+from ..types.charge_list_response import ChargeListResponse
 from ..types.charge_status import ChargeStatus
 from ..types.charge_type_db import ChargeTypeDb
+from ..types.invoice_list_response import InvoiceListResponse
 from ..types.invoice_response import InvoiceResponse
-from ..types.paginated_response import PaginatedResponse
 from ..types.public_pricing_response import PublicPricingResponse
 from .raw_client import AsyncRawBillingClient, RawBillingClient
 
@@ -67,7 +69,7 @@ class BillingClient:
         start_date: typing.Optional[str] = None,
         end_date: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> PaginatedResponse:
+    ) -> ChargeListResponse:
         """
         Paginated, filterable charge history for an account.
         Returns charges with entity context (phone number, flow name, contact name)
@@ -98,7 +100,7 @@ class BillingClient:
 
         Returns
         -------
-        PaginatedResponse
+        ChargeListResponse
             Paginated charge history
 
         Examples
@@ -249,7 +251,7 @@ class BillingClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> PaginatedResponse:
+    ) -> InvoiceListResponse:
         """
         GET /api/v1/billing/invoices
 
@@ -266,7 +268,7 @@ class BillingClient:
 
         Returns
         -------
-        PaginatedResponse
+        InvoiceListResponse
             Paginated invoice list
 
         Examples
@@ -320,7 +322,7 @@ class BillingClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> PaginatedResponse:
+    ) -> BalanceTransactionListResponse:
         """
         GET /api/v1/billing/transactions
 
@@ -337,7 +339,7 @@ class BillingClient:
 
         Returns
         -------
-        PaginatedResponse
+        BalanceTransactionListResponse
             Transaction history
 
         Examples
@@ -446,7 +448,7 @@ class AsyncBillingClient:
         start_date: typing.Optional[str] = None,
         end_date: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> PaginatedResponse:
+    ) -> ChargeListResponse:
         """
         Paginated, filterable charge history for an account.
         Returns charges with entity context (phone number, flow name, contact name)
@@ -477,7 +479,7 @@ class AsyncBillingClient:
 
         Returns
         -------
-        PaginatedResponse
+        ChargeListResponse
             Paginated charge history
 
         Examples
@@ -660,7 +662,7 @@ class AsyncBillingClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> PaginatedResponse:
+    ) -> InvoiceListResponse:
         """
         GET /api/v1/billing/invoices
 
@@ -677,7 +679,7 @@ class AsyncBillingClient:
 
         Returns
         -------
-        PaginatedResponse
+        InvoiceListResponse
             Paginated invoice list
 
         Examples
@@ -747,7 +749,7 @@ class AsyncBillingClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> PaginatedResponse:
+    ) -> BalanceTransactionListResponse:
         """
         GET /api/v1/billing/transactions
 
@@ -764,7 +766,7 @@ class AsyncBillingClient:
 
         Returns
         -------
-        PaginatedResponse
+        BalanceTransactionListResponse
             Transaction history
 
         Examples

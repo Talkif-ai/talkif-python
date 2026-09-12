@@ -4,6 +4,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.phone_provider_list_response import PhoneProviderListResponse
 from ..types.phone_provider_response import PhoneProviderResponse
 from .raw_client import AsyncRawPhoneProvidersClient, RawPhoneProvidersClient
 
@@ -29,7 +30,7 @@ class PhoneProvidersClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.List[PhoneProviderResponse]:
+    ) -> PhoneProviderListResponse:
         """
         GET /api/v1/phone/providers
 
@@ -46,7 +47,7 @@ class PhoneProvidersClient:
 
         Returns
         -------
-        typing.List[PhoneProviderResponse]
+        PhoneProviderListResponse
             List of providers
 
         Examples
@@ -116,7 +117,7 @@ class AsyncPhoneProvidersClient:
         limit: typing.Optional[int] = None,
         offset: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.List[PhoneProviderResponse]:
+    ) -> PhoneProviderListResponse:
         """
         GET /api/v1/phone/providers
 
@@ -133,7 +134,7 @@ class AsyncPhoneProvidersClient:
 
         Returns
         -------
-        typing.List[PhoneProviderResponse]
+        PhoneProviderListResponse
             List of providers
 
         Examples

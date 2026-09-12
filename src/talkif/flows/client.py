@@ -6,9 +6,9 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.flow_definition import FlowDefinition
 from ..types.flow_detail_response import FlowDetailResponse
+from ..types.flow_list_response import FlowListResponse
 from ..types.flow_version_detail_response import FlowVersionDetailResponse
 from ..types.max_call_duration_settings import MaxCallDurationSettings
-from ..types.paginated_response import PaginatedResponse
 from ..types.publish_flow_response import PublishFlowResponse
 from ..types.rollback_response import RollbackResponse
 from ..types.user_idle_settings import UserIdleSettings
@@ -34,7 +34,13 @@ class FlowsClient:
         """
         return self._raw_client
 
-    def list_flows(self, *, request_options: typing.Optional[RequestOptions] = None) -> PaginatedResponse:
+    def list_flows(
+        self,
+        *,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> FlowListResponse:
         """
         GET /api/v1/flows
 
@@ -42,12 +48,18 @@ class FlowsClient:
 
         Parameters
         ----------
+        limit : typing.Optional[int]
+            Max items to return (1-100, default 20)
+
+        offset : typing.Optional[int]
+            Items to skip (default 0)
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        PaginatedResponse
+        FlowListResponse
             Paginated list of flows with connected phone numbers
 
         Examples
@@ -59,7 +71,7 @@ class FlowsClient:
         )
         client.flows.list_flows()
         """
-        _response = self._raw_client.list_flows(request_options=request_options)
+        _response = self._raw_client.list_flows(limit=limit, offset=offset, request_options=request_options)
         return _response.data
 
     def create_flow(
@@ -507,7 +519,13 @@ class AsyncFlowsClient:
         """
         return self._raw_client
 
-    async def list_flows(self, *, request_options: typing.Optional[RequestOptions] = None) -> PaginatedResponse:
+    async def list_flows(
+        self,
+        *,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> FlowListResponse:
         """
         GET /api/v1/flows
 
@@ -515,12 +533,18 @@ class AsyncFlowsClient:
 
         Parameters
         ----------
+        limit : typing.Optional[int]
+            Max items to return (1-100, default 20)
+
+        offset : typing.Optional[int]
+            Items to skip (default 0)
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        PaginatedResponse
+        FlowListResponse
             Paginated list of flows with connected phone numbers
 
         Examples
@@ -540,7 +564,7 @@ class AsyncFlowsClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.list_flows(request_options=request_options)
+        _response = await self._raw_client.list_flows(limit=limit, offset=offset, request_options=request_options)
         return _response.data
 
     async def create_flow(
