@@ -6,16 +6,22 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
+    from .accept_transfer_offer_request import AcceptTransferOfferRequest
+    from .account_role import AccountRole
     from .action_definition import ActionDefinition
     from .action_item import ActionItem
     from .added_response import AddedResponse
     from .agent_change_summary import AgentChangeSummary
     from .agent_definition import AgentDefinition
+    from .agent_runtime import AgentRuntime
     from .agent_status import AgentStatus
     from .agent_type import AgentType
     from .analytics_cost_breakdown_response import AnalyticsCostBreakdownResponse
     from .analytics_cost_line_item_response import AnalyticsCostLineItemResponse
+    from .app_destination_config import AppDestinationConfig
     from .attempt_bucket import AttemptBucket
+    from .available_numbers_echo import AvailableNumbersEcho
+    from .available_numbers_response import AvailableNumbersResponse
     from .available_phone_number import AvailablePhoneNumber
     from .balance_summary_response import BalanceSummaryResponse
     from .balance_transaction_list_response import BalanceTransactionListResponse
@@ -39,11 +45,13 @@ if typing.TYPE_CHECKING:
     from .call_provider_type import CallProviderType
     from .call_rates import CallRates
     from .call_response import CallResponse
+    from .call_sort_field import CallSortField
     from .call_source import CallSource
     from .call_status import CallStatus
     from .call_transcript_response import CallTranscriptResponse
     from .call_window_request import CallWindowRequest
     from .call_window_response import CallWindowResponse
+    from .caller_id_policy import CallerIdPolicy
     from .campaign_analytics_response import CampaignAnalyticsResponse
     from .campaign_contact_list_response import CampaignContactListResponse
     from .campaign_contact_response import CampaignContactResponse
@@ -84,6 +92,9 @@ if typing.TYPE_CHECKING:
     from .create_contact_request import CreateContactRequest
     from .create_public_session_response import CreatePublicSessionResponse
     from .create_web_rtc_call_response import CreateWebRtcCallResponse
+    from .destination_group import DestinationGroup
+    from .destination_group_list_response import DestinationGroupListResponse
+    from .destination_group_member import DestinationGroupMember
     from .detected_intent import DetectedIntent
     from .direction_counts import DirectionCounts
     from .dnc_entry_response import DncEntryResponse
@@ -142,8 +153,22 @@ if typing.TYPE_CHECKING:
     from .make_call_response_initiated import MakeCallResponseInitiated
     from .make_call_response_queued import MakeCallResponseQueued
     from .max_call_duration_settings import MaxCallDurationSettings
+    from .member_availability import MemberAvailability
+    from .member_availability_source import MemberAvailabilitySource
+    from .member_availability_status import MemberAvailabilityStatus
+    from .member_hours import MemberHours
+    from .member_hours_range import MemberHoursRange
+    from .member_hours_response import MemberHoursResponse
+    from .member_role import MemberRole
+    from .member_status import MemberStatus
+    from .member_tag_catalog_response import MemberTagCatalogResponse
+    from .member_tag_usage import MemberTagUsage
+    from .member_tags_response import MemberTagsResponse
+    from .member_weekly_hours import MemberWeeklyHours
     from .paginated_response import PaginatedResponse
     from .pagination_meta import PaginationMeta
+    from .permissions_response import PermissionsResponse
+    from .phone_destination_config import PhoneDestinationConfig
     from .phone_number_capability import PhoneNumberCapability
     from .phone_number_list_response import PhoneNumberListResponse
     from .phone_number_pricing import PhoneNumberPricing
@@ -165,6 +190,8 @@ if typing.TYPE_CHECKING:
     from .recording_url_response import RecordingUrlResponse
     from .removed_response import RemovedResponse
     from .request_schema import RequestSchema
+    from .role_definition import RoleDefinition
+    from .roles_response import RolesResponse
     from .rollback_response import RollbackResponse
     from .schedule_frequency import ScheduleFrequency
     from .schedule_list_response import ScheduleListResponse
@@ -174,6 +201,7 @@ if typing.TYPE_CHECKING:
     from .service_change_summary import ServiceChangeSummary
     from .service_definition import ServiceDefinition
     from .skipped_contact import SkippedContact
+    from .sort_direction import SortDirection
     from .stt_capabilities import SttCapabilities
     from .stt_model import SttModel
     from .stt_pricing import SttPricing
@@ -188,6 +216,20 @@ if typing.TYPE_CHECKING:
     from .transcript_message import TranscriptMessage
     from .transcript_message_metrics import TranscriptMessageMetrics
     from .transcript_speaker import TranscriptSpeaker
+    from .transfer_app_delivery import TransferAppDelivery
+    from .transfer_app_delivery_list_response import TransferAppDeliveryListResponse
+    from .transfer_app_delivery_result import TransferAppDeliveryResult
+    from .transfer_destination import TransferDestination
+    from .transfer_destination_list_response import TransferDestinationListResponse
+    from .transfer_member import TransferMember
+    from .transfer_member_list_response import TransferMemberListResponse
+    from .transfer_offer import TransferOffer
+    from .transfer_offer_accept_response import TransferOfferAcceptResponse
+    from .transfer_offer_caller import TransferOfferCaller
+    from .transfer_offer_case import TransferOfferCase
+    from .transfer_offer_join import TransferOfferJoin
+    from .transfer_offer_web_rtc_answer import TransferOfferWebRtcAnswer
+    from .transfer_offer_withdrawn import TransferOfferWithdrawn
     from .transformation_summary import TransformationSummary
     from .transition_definition import TransitionDefinition
     from .tts_capabilities import TtsCapabilities
@@ -202,16 +244,22 @@ if typing.TYPE_CHECKING:
     from .voices_dto import VoicesDto
     from .web_rtc_offer_response import WebRtcOfferResponse
 _dynamic_imports: typing.Dict[str, str] = {
+    "AcceptTransferOfferRequest": ".accept_transfer_offer_request",
+    "AccountRole": ".account_role",
     "ActionDefinition": ".action_definition",
     "ActionItem": ".action_item",
     "AddedResponse": ".added_response",
     "AgentChangeSummary": ".agent_change_summary",
     "AgentDefinition": ".agent_definition",
+    "AgentRuntime": ".agent_runtime",
     "AgentStatus": ".agent_status",
     "AgentType": ".agent_type",
     "AnalyticsCostBreakdownResponse": ".analytics_cost_breakdown_response",
     "AnalyticsCostLineItemResponse": ".analytics_cost_line_item_response",
+    "AppDestinationConfig": ".app_destination_config",
     "AttemptBucket": ".attempt_bucket",
+    "AvailableNumbersEcho": ".available_numbers_echo",
+    "AvailableNumbersResponse": ".available_numbers_response",
     "AvailablePhoneNumber": ".available_phone_number",
     "BalanceSummaryResponse": ".balance_summary_response",
     "BalanceTransactionListResponse": ".balance_transaction_list_response",
@@ -235,11 +283,13 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CallProviderType": ".call_provider_type",
     "CallRates": ".call_rates",
     "CallResponse": ".call_response",
+    "CallSortField": ".call_sort_field",
     "CallSource": ".call_source",
     "CallStatus": ".call_status",
     "CallTranscriptResponse": ".call_transcript_response",
     "CallWindowRequest": ".call_window_request",
     "CallWindowResponse": ".call_window_response",
+    "CallerIdPolicy": ".caller_id_policy",
     "CampaignAnalyticsResponse": ".campaign_analytics_response",
     "CampaignContactListResponse": ".campaign_contact_list_response",
     "CampaignContactResponse": ".campaign_contact_response",
@@ -280,6 +330,9 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreateContactRequest": ".create_contact_request",
     "CreatePublicSessionResponse": ".create_public_session_response",
     "CreateWebRtcCallResponse": ".create_web_rtc_call_response",
+    "DestinationGroup": ".destination_group",
+    "DestinationGroupListResponse": ".destination_group_list_response",
+    "DestinationGroupMember": ".destination_group_member",
     "DetectedIntent": ".detected_intent",
     "DirectionCounts": ".direction_counts",
     "DncEntryResponse": ".dnc_entry_response",
@@ -340,8 +393,22 @@ _dynamic_imports: typing.Dict[str, str] = {
     "MakeCallResponse_Initiated": ".make_call_response",
     "MakeCallResponse_Queued": ".make_call_response",
     "MaxCallDurationSettings": ".max_call_duration_settings",
+    "MemberAvailability": ".member_availability",
+    "MemberAvailabilitySource": ".member_availability_source",
+    "MemberAvailabilityStatus": ".member_availability_status",
+    "MemberHours": ".member_hours",
+    "MemberHoursRange": ".member_hours_range",
+    "MemberHoursResponse": ".member_hours_response",
+    "MemberRole": ".member_role",
+    "MemberStatus": ".member_status",
+    "MemberTagCatalogResponse": ".member_tag_catalog_response",
+    "MemberTagUsage": ".member_tag_usage",
+    "MemberTagsResponse": ".member_tags_response",
+    "MemberWeeklyHours": ".member_weekly_hours",
     "PaginatedResponse": ".paginated_response",
     "PaginationMeta": ".pagination_meta",
+    "PermissionsResponse": ".permissions_response",
+    "PhoneDestinationConfig": ".phone_destination_config",
     "PhoneNumberCapability": ".phone_number_capability",
     "PhoneNumberListResponse": ".phone_number_list_response",
     "PhoneNumberPricing": ".phone_number_pricing",
@@ -363,6 +430,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "RecordingUrlResponse": ".recording_url_response",
     "RemovedResponse": ".removed_response",
     "RequestSchema": ".request_schema",
+    "RoleDefinition": ".role_definition",
+    "RolesResponse": ".roles_response",
     "RollbackResponse": ".rollback_response",
     "ScheduleFrequency": ".schedule_frequency",
     "ScheduleListResponse": ".schedule_list_response",
@@ -372,6 +441,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ServiceChangeSummary": ".service_change_summary",
     "ServiceDefinition": ".service_definition",
     "SkippedContact": ".skipped_contact",
+    "SortDirection": ".sort_direction",
     "SttCapabilities": ".stt_capabilities",
     "SttModel": ".stt_model",
     "SttPricing": ".stt_pricing",
@@ -386,6 +456,20 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TranscriptMessage": ".transcript_message",
     "TranscriptMessageMetrics": ".transcript_message_metrics",
     "TranscriptSpeaker": ".transcript_speaker",
+    "TransferAppDelivery": ".transfer_app_delivery",
+    "TransferAppDeliveryListResponse": ".transfer_app_delivery_list_response",
+    "TransferAppDeliveryResult": ".transfer_app_delivery_result",
+    "TransferDestination": ".transfer_destination",
+    "TransferDestinationListResponse": ".transfer_destination_list_response",
+    "TransferMember": ".transfer_member",
+    "TransferMemberListResponse": ".transfer_member_list_response",
+    "TransferOffer": ".transfer_offer",
+    "TransferOfferAcceptResponse": ".transfer_offer_accept_response",
+    "TransferOfferCaller": ".transfer_offer_caller",
+    "TransferOfferCase": ".transfer_offer_case",
+    "TransferOfferJoin": ".transfer_offer_join",
+    "TransferOfferWebRtcAnswer": ".transfer_offer_web_rtc_answer",
+    "TransferOfferWithdrawn": ".transfer_offer_withdrawn",
     "TransformationSummary": ".transformation_summary",
     "TransitionDefinition": ".transition_definition",
     "TtsCapabilities": ".tts_capabilities",
@@ -424,16 +508,22 @@ def __dir__():
 
 
 __all__ = [
+    "AcceptTransferOfferRequest",
+    "AccountRole",
     "ActionDefinition",
     "ActionItem",
     "AddedResponse",
     "AgentChangeSummary",
     "AgentDefinition",
+    "AgentRuntime",
     "AgentStatus",
     "AgentType",
     "AnalyticsCostBreakdownResponse",
     "AnalyticsCostLineItemResponse",
+    "AppDestinationConfig",
     "AttemptBucket",
+    "AvailableNumbersEcho",
+    "AvailableNumbersResponse",
     "AvailablePhoneNumber",
     "BalanceSummaryResponse",
     "BalanceTransactionListResponse",
@@ -457,11 +547,13 @@ __all__ = [
     "CallProviderType",
     "CallRates",
     "CallResponse",
+    "CallSortField",
     "CallSource",
     "CallStatus",
     "CallTranscriptResponse",
     "CallWindowRequest",
     "CallWindowResponse",
+    "CallerIdPolicy",
     "CampaignAnalyticsResponse",
     "CampaignContactListResponse",
     "CampaignContactResponse",
@@ -502,6 +594,9 @@ __all__ = [
     "CreateContactRequest",
     "CreatePublicSessionResponse",
     "CreateWebRtcCallResponse",
+    "DestinationGroup",
+    "DestinationGroupListResponse",
+    "DestinationGroupMember",
     "DetectedIntent",
     "DirectionCounts",
     "DncEntryResponse",
@@ -562,8 +657,22 @@ __all__ = [
     "MakeCallResponse_Initiated",
     "MakeCallResponse_Queued",
     "MaxCallDurationSettings",
+    "MemberAvailability",
+    "MemberAvailabilitySource",
+    "MemberAvailabilityStatus",
+    "MemberHours",
+    "MemberHoursRange",
+    "MemberHoursResponse",
+    "MemberRole",
+    "MemberStatus",
+    "MemberTagCatalogResponse",
+    "MemberTagUsage",
+    "MemberTagsResponse",
+    "MemberWeeklyHours",
     "PaginatedResponse",
     "PaginationMeta",
+    "PermissionsResponse",
+    "PhoneDestinationConfig",
     "PhoneNumberCapability",
     "PhoneNumberListResponse",
     "PhoneNumberPricing",
@@ -585,6 +694,8 @@ __all__ = [
     "RecordingUrlResponse",
     "RemovedResponse",
     "RequestSchema",
+    "RoleDefinition",
+    "RolesResponse",
     "RollbackResponse",
     "ScheduleFrequency",
     "ScheduleListResponse",
@@ -594,6 +705,7 @@ __all__ = [
     "ServiceChangeSummary",
     "ServiceDefinition",
     "SkippedContact",
+    "SortDirection",
     "SttCapabilities",
     "SttModel",
     "SttPricing",
@@ -608,6 +720,20 @@ __all__ = [
     "TranscriptMessage",
     "TranscriptMessageMetrics",
     "TranscriptSpeaker",
+    "TransferAppDelivery",
+    "TransferAppDeliveryListResponse",
+    "TransferAppDeliveryResult",
+    "TransferDestination",
+    "TransferDestinationListResponse",
+    "TransferMember",
+    "TransferMemberListResponse",
+    "TransferOffer",
+    "TransferOfferAcceptResponse",
+    "TransferOfferCaller",
+    "TransferOfferCase",
+    "TransferOfferJoin",
+    "TransferOfferWebRtcAnswer",
+    "TransferOfferWithdrawn",
     "TransformationSummary",
     "TransitionDefinition",
     "TtsCapabilities",

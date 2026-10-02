@@ -4,18 +4,19 @@ import datetime as dt
 import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
-from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
 from ..types.call_direction import CallDirection
 from ..types.call_insights import CallInsights
 from ..types.call_list_response import CallListResponse
 from ..types.call_provider_type import CallProviderType
 from ..types.call_response import CallResponse
+from ..types.call_sort_field import CallSortField
 from ..types.call_source import CallSource
 from ..types.call_status import CallStatus
 from ..types.call_transcript_response import CallTranscriptResponse
 from ..types.make_call_response import MakeCallResponse
 from ..types.recording_url_response import RecordingUrlResponse
+from ..types.sort_direction import SortDirection
 from .raw_client import AsyncRawCallsClient, RawCallsClient
 
 # this is used as the default value for optional parameters
@@ -36,6 +37,125 @@ class CallsClient:
         RawCallsClient
         """
         return self._raw_client
+
+    def list_calls(
+        self,
+        *,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        status: typing.Optional[CallStatus] = None,
+        direction: typing.Optional[CallDirection] = None,
+        source: typing.Optional[CallSource] = None,
+        phone_number: typing.Optional[str] = None,
+        is_lead: typing.Optional[bool] = None,
+        flow_id: typing.Optional[str] = None,
+        contact_id: typing.Optional[str] = None,
+        schedule_id: typing.Optional[str] = None,
+        campaign_id: typing.Optional[str] = None,
+        provider_type: typing.Optional[CallProviderType] = None,
+        search: typing.Optional[str] = None,
+        sort_by: typing.Optional[CallSortField] = None,
+        sort_direction: typing.Optional[SortDirection] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CallListResponse:
+        """
+        Returns the account's calls, newest first, with optional filters. Use `status` to narrow to live calls (for example `in_progress`), `flowId` / `campaignId` / `contactId` to scope by resource, and `startDate` / `endDate` for a time window.
+
+        Parameters
+        ----------
+        limit : typing.Optional[int]
+            Maximum number of items to return (default: 20, max: 100)
+
+        offset : typing.Optional[int]
+            Number of items to skip for pagination (default: 0)
+
+        start_date : typing.Optional[dt.datetime]
+            Only include calls after this timestamp (inclusive)
+
+        end_date : typing.Optional[dt.datetime]
+            Only include calls before this timestamp (inclusive)
+
+        status : typing.Optional[CallStatus]
+            Filter by call status
+
+        direction : typing.Optional[CallDirection]
+            Filter by call direction
+
+        source : typing.Optional[CallSource]
+            Filter by call source (direct, scheduled, campaign)
+
+        phone_number : typing.Optional[str]
+            Filter by phone number — matches either the from or to number (E.164)
+
+        is_lead : typing.Optional[bool]
+            Filter by whether the call was triggered by a Meta lead form (true = lead-driven only)
+
+        flow_id : typing.Optional[str]
+            Filter by flow ID
+
+        contact_id : typing.Optional[str]
+            Filter by contact ID
+
+        schedule_id : typing.Optional[str]
+            Filter by schedule ID (for scheduled calls)
+
+        campaign_id : typing.Optional[str]
+            Filter by campaign ID (for campaign calls)
+
+        provider_type : typing.Optional[CallProviderType]
+            Filter by telephony provider type (channel)
+
+        search : typing.Optional[str]
+            Free-text search across the contact name and the raw from/to phone
+            numbers (case-insensitive substring). Matches calls to/from numbers that
+            were never saved as contacts.
+
+        sort_by : typing.Optional[CallSortField]
+            Field to sort results by (default: creation time)
+
+        sort_direction : typing.Optional[SortDirection]
+            Sort direction for `sortBy` (default: desc)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CallListResponse
+            Paginated list of calls
+
+        Examples
+        --------
+        from talkif import Talkif
+
+        client = Talkif(
+            token="YOUR_TOKEN",
+        )
+        client.calls.list_calls()
+        """
+        _response = self._raw_client.list_calls(
+            limit=limit,
+            offset=offset,
+            start_date=start_date,
+            end_date=end_date,
+            status=status,
+            direction=direction,
+            source=source,
+            phone_number=phone_number,
+            is_lead=is_lead,
+            flow_id=flow_id,
+            contact_id=contact_id,
+            schedule_id=schedule_id,
+            campaign_id=campaign_id,
+            provider_type=provider_type,
+            search=search,
+            sort_by=sort_by,
+            sort_direction=sort_direction,
+            request_options=request_options,
+        )
+        return _response.data
 
     def make_call(
         self,
@@ -128,161 +248,6 @@ class CallsClient:
             request_options=request_options,
         )
         return _response.data
-
-    def get_active_calls(
-        self,
-        *,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[CallResponse, CallListResponse]:
-        """
-        GET /api/v1/calls/active
-
-        Parameters
-        ----------
-        limit : typing.Optional[int]
-            Max items to return (1-100, default 10)
-
-        offset : typing.Optional[int]
-            Items to skip (default 0)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        SyncPager[CallResponse, CallListResponse]
-            Active calls
-
-        Examples
-        --------
-        from talkif import Talkif
-
-        client = Talkif(
-            token="YOUR_TOKEN",
-        )
-        response = client.calls.get_active_calls()
-        for item in response:
-            yield item
-        # alternatively, you can paginate page-by-page
-        for page in response.iter_pages():
-            yield page
-        """
-        return self._raw_client.get_active_calls(limit=limit, offset=offset, request_options=request_options)
-
-    def get_call_history(
-        self,
-        *,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        start_date: typing.Optional[dt.datetime] = None,
-        end_date: typing.Optional[dt.datetime] = None,
-        status: typing.Optional[CallStatus] = None,
-        direction: typing.Optional[CallDirection] = None,
-        source: typing.Optional[CallSource] = None,
-        phone_number: typing.Optional[str] = None,
-        is_lead: typing.Optional[bool] = None,
-        flow_id: typing.Optional[str] = None,
-        contact_id: typing.Optional[str] = None,
-        schedule_id: typing.Optional[str] = None,
-        campaign_id: typing.Optional[str] = None,
-        provider_type: typing.Optional[CallProviderType] = None,
-        search: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[CallResponse, CallListResponse]:
-        """
-        GET /api/v1/calls/history
-
-        Parameters
-        ----------
-        limit : typing.Optional[int]
-            Maximum number of items to return (default: 20, max: 100)
-
-        offset : typing.Optional[int]
-            Number of items to skip for pagination (default: 0)
-
-        start_date : typing.Optional[dt.datetime]
-            Only include calls after this timestamp (inclusive)
-
-        end_date : typing.Optional[dt.datetime]
-            Only include calls before this timestamp (inclusive)
-
-        status : typing.Optional[CallStatus]
-            Filter by call status
-
-        direction : typing.Optional[CallDirection]
-            Filter by call direction
-
-        source : typing.Optional[CallSource]
-            Filter by call source (direct, scheduled, campaign)
-
-        phone_number : typing.Optional[str]
-            Filter by phone number — matches either the from or to number (E.164)
-
-        is_lead : typing.Optional[bool]
-            Filter by whether the call was triggered by a Meta lead form (true = lead-driven only)
-
-        flow_id : typing.Optional[str]
-            Filter by flow ID
-
-        contact_id : typing.Optional[str]
-            Filter by contact ID
-
-        schedule_id : typing.Optional[str]
-            Filter by schedule ID (for scheduled calls)
-
-        campaign_id : typing.Optional[str]
-            Filter by campaign ID (for campaign calls)
-
-        provider_type : typing.Optional[CallProviderType]
-            Filter by telephony provider type (channel)
-
-        search : typing.Optional[str]
-            Free-text search across the contact name and the raw from/to phone
-            numbers (case-insensitive substring). Matches calls to/from numbers that
-            were never saved as contacts.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        SyncPager[CallResponse, CallListResponse]
-            Call history
-
-        Examples
-        --------
-        from talkif import Talkif
-
-        client = Talkif(
-            token="YOUR_TOKEN",
-        )
-        response = client.calls.get_call_history()
-        for item in response:
-            yield item
-        # alternatively, you can paginate page-by-page
-        for page in response.iter_pages():
-            yield page
-        """
-        return self._raw_client.get_call_history(
-            limit=limit,
-            offset=offset,
-            start_date=start_date,
-            end_date=end_date,
-            status=status,
-            direction=direction,
-            source=source,
-            phone_number=phone_number,
-            is_lead=is_lead,
-            flow_id=flow_id,
-            contact_id=contact_id,
-            schedule_id=schedule_id,
-            campaign_id=campaign_id,
-            provider_type=provider_type,
-            search=search,
-            request_options=request_options,
-        )
 
     def get_call_details(
         self, call_id: str, *, request_options: typing.Optional[RequestOptions] = None
@@ -410,7 +375,8 @@ class CallsClient:
         Charges for actual storage duration before deletion (billing at lifecycle end).
         Uses idempotency key to prevent double-charging if racing with retention job.
 
-        SECURITY: Verifies account access, call ownership.
+        Owner or admin only: deleting a recording destroys data the account may
+        need to keep. With an API key, the key's creator must be an owner or admin.
 
         Parameters
         ----------
@@ -486,6 +452,133 @@ class AsyncCallsClient:
         AsyncRawCallsClient
         """
         return self._raw_client
+
+    async def list_calls(
+        self,
+        *,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        status: typing.Optional[CallStatus] = None,
+        direction: typing.Optional[CallDirection] = None,
+        source: typing.Optional[CallSource] = None,
+        phone_number: typing.Optional[str] = None,
+        is_lead: typing.Optional[bool] = None,
+        flow_id: typing.Optional[str] = None,
+        contact_id: typing.Optional[str] = None,
+        schedule_id: typing.Optional[str] = None,
+        campaign_id: typing.Optional[str] = None,
+        provider_type: typing.Optional[CallProviderType] = None,
+        search: typing.Optional[str] = None,
+        sort_by: typing.Optional[CallSortField] = None,
+        sort_direction: typing.Optional[SortDirection] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CallListResponse:
+        """
+        Returns the account's calls, newest first, with optional filters. Use `status` to narrow to live calls (for example `in_progress`), `flowId` / `campaignId` / `contactId` to scope by resource, and `startDate` / `endDate` for a time window.
+
+        Parameters
+        ----------
+        limit : typing.Optional[int]
+            Maximum number of items to return (default: 20, max: 100)
+
+        offset : typing.Optional[int]
+            Number of items to skip for pagination (default: 0)
+
+        start_date : typing.Optional[dt.datetime]
+            Only include calls after this timestamp (inclusive)
+
+        end_date : typing.Optional[dt.datetime]
+            Only include calls before this timestamp (inclusive)
+
+        status : typing.Optional[CallStatus]
+            Filter by call status
+
+        direction : typing.Optional[CallDirection]
+            Filter by call direction
+
+        source : typing.Optional[CallSource]
+            Filter by call source (direct, scheduled, campaign)
+
+        phone_number : typing.Optional[str]
+            Filter by phone number — matches either the from or to number (E.164)
+
+        is_lead : typing.Optional[bool]
+            Filter by whether the call was triggered by a Meta lead form (true = lead-driven only)
+
+        flow_id : typing.Optional[str]
+            Filter by flow ID
+
+        contact_id : typing.Optional[str]
+            Filter by contact ID
+
+        schedule_id : typing.Optional[str]
+            Filter by schedule ID (for scheduled calls)
+
+        campaign_id : typing.Optional[str]
+            Filter by campaign ID (for campaign calls)
+
+        provider_type : typing.Optional[CallProviderType]
+            Filter by telephony provider type (channel)
+
+        search : typing.Optional[str]
+            Free-text search across the contact name and the raw from/to phone
+            numbers (case-insensitive substring). Matches calls to/from numbers that
+            were never saved as contacts.
+
+        sort_by : typing.Optional[CallSortField]
+            Field to sort results by (default: creation time)
+
+        sort_direction : typing.Optional[SortDirection]
+            Sort direction for `sortBy` (default: desc)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CallListResponse
+            Paginated list of calls
+
+        Examples
+        --------
+        import asyncio
+
+        from talkif import AsyncTalkif
+
+        client = AsyncTalkif(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.calls.list_calls()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_calls(
+            limit=limit,
+            offset=offset,
+            start_date=start_date,
+            end_date=end_date,
+            status=status,
+            direction=direction,
+            source=source,
+            phone_number=phone_number,
+            is_lead=is_lead,
+            flow_id=flow_id,
+            contact_id=contact_id,
+            schedule_id=schedule_id,
+            campaign_id=campaign_id,
+            provider_type=provider_type,
+            search=search,
+            sort_by=sort_by,
+            sort_direction=sort_direction,
+            request_options=request_options,
+        )
+        return _response.data
 
     async def make_call(
         self,
@@ -586,179 +679,6 @@ class AsyncCallsClient:
             request_options=request_options,
         )
         return _response.data
-
-    async def get_active_calls(
-        self,
-        *,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[CallResponse, CallListResponse]:
-        """
-        GET /api/v1/calls/active
-
-        Parameters
-        ----------
-        limit : typing.Optional[int]
-            Max items to return (1-100, default 10)
-
-        offset : typing.Optional[int]
-            Items to skip (default 0)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncPager[CallResponse, CallListResponse]
-            Active calls
-
-        Examples
-        --------
-        import asyncio
-
-        from talkif import AsyncTalkif
-
-        client = AsyncTalkif(
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            response = await client.calls.get_active_calls()
-            async for item in response:
-                yield item
-
-            # alternatively, you can paginate page-by-page
-            async for page in response.iter_pages():
-                yield page
-
-
-        asyncio.run(main())
-        """
-        return await self._raw_client.get_active_calls(limit=limit, offset=offset, request_options=request_options)
-
-    async def get_call_history(
-        self,
-        *,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        start_date: typing.Optional[dt.datetime] = None,
-        end_date: typing.Optional[dt.datetime] = None,
-        status: typing.Optional[CallStatus] = None,
-        direction: typing.Optional[CallDirection] = None,
-        source: typing.Optional[CallSource] = None,
-        phone_number: typing.Optional[str] = None,
-        is_lead: typing.Optional[bool] = None,
-        flow_id: typing.Optional[str] = None,
-        contact_id: typing.Optional[str] = None,
-        schedule_id: typing.Optional[str] = None,
-        campaign_id: typing.Optional[str] = None,
-        provider_type: typing.Optional[CallProviderType] = None,
-        search: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[CallResponse, CallListResponse]:
-        """
-        GET /api/v1/calls/history
-
-        Parameters
-        ----------
-        limit : typing.Optional[int]
-            Maximum number of items to return (default: 20, max: 100)
-
-        offset : typing.Optional[int]
-            Number of items to skip for pagination (default: 0)
-
-        start_date : typing.Optional[dt.datetime]
-            Only include calls after this timestamp (inclusive)
-
-        end_date : typing.Optional[dt.datetime]
-            Only include calls before this timestamp (inclusive)
-
-        status : typing.Optional[CallStatus]
-            Filter by call status
-
-        direction : typing.Optional[CallDirection]
-            Filter by call direction
-
-        source : typing.Optional[CallSource]
-            Filter by call source (direct, scheduled, campaign)
-
-        phone_number : typing.Optional[str]
-            Filter by phone number — matches either the from or to number (E.164)
-
-        is_lead : typing.Optional[bool]
-            Filter by whether the call was triggered by a Meta lead form (true = lead-driven only)
-
-        flow_id : typing.Optional[str]
-            Filter by flow ID
-
-        contact_id : typing.Optional[str]
-            Filter by contact ID
-
-        schedule_id : typing.Optional[str]
-            Filter by schedule ID (for scheduled calls)
-
-        campaign_id : typing.Optional[str]
-            Filter by campaign ID (for campaign calls)
-
-        provider_type : typing.Optional[CallProviderType]
-            Filter by telephony provider type (channel)
-
-        search : typing.Optional[str]
-            Free-text search across the contact name and the raw from/to phone
-            numbers (case-insensitive substring). Matches calls to/from numbers that
-            were never saved as contacts.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncPager[CallResponse, CallListResponse]
-            Call history
-
-        Examples
-        --------
-        import asyncio
-
-        from talkif import AsyncTalkif
-
-        client = AsyncTalkif(
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            response = await client.calls.get_call_history()
-            async for item in response:
-                yield item
-
-            # alternatively, you can paginate page-by-page
-            async for page in response.iter_pages():
-                yield page
-
-
-        asyncio.run(main())
-        """
-        return await self._raw_client.get_call_history(
-            limit=limit,
-            offset=offset,
-            start_date=start_date,
-            end_date=end_date,
-            status=status,
-            direction=direction,
-            source=source,
-            phone_number=phone_number,
-            is_lead=is_lead,
-            flow_id=flow_id,
-            contact_id=contact_id,
-            schedule_id=schedule_id,
-            campaign_id=campaign_id,
-            provider_type=provider_type,
-            search=search,
-            request_options=request_options,
-        )
 
     async def get_call_details(
         self, call_id: str, *, request_options: typing.Optional[RequestOptions] = None
@@ -912,7 +832,8 @@ class AsyncCallsClient:
         Charges for actual storage duration before deletion (billing at lifecycle end).
         Uses idempotency key to prevent double-charging if racing with retention job.
 
-        SECURITY: Verifies account access, call ownership.
+        Owner or admin only: deleting a recording destroys data the account may
+        need to keep. With an API key, the key's creator must be an owner or admin.
 
         Parameters
         ----------

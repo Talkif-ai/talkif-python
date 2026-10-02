@@ -4,7 +4,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..types.available_phone_number import AvailablePhoneNumber
+from ..types.available_numbers_response import AvailableNumbersResponse
 from ..types.phone_number_list_response import PhoneNumberListResponse
 from ..types.phone_number_pricing import PhoneNumberPricing
 from ..types.phone_number_response import PhoneNumberResponse
@@ -75,9 +75,25 @@ class PhoneNumbersClient:
         number_type: typing.Optional[str] = None,
         area_code: typing.Optional[str] = None,
         contains: typing.Optional[str] = None,
+        in_postal_code: typing.Optional[str] = None,
+        in_region: typing.Optional[str] = None,
+        in_rate_center: typing.Optional[str] = None,
+        in_lata: typing.Optional[str] = None,
+        in_locality: typing.Optional[str] = None,
+        near_number: typing.Optional[str] = None,
+        near_lat_long: typing.Optional[str] = None,
+        distance: typing.Optional[int] = None,
+        sms_enabled: typing.Optional[bool] = None,
+        mms_enabled: typing.Optional[bool] = None,
+        voice_enabled: typing.Optional[bool] = None,
+        fax_enabled: typing.Optional[bool] = None,
+        beta: typing.Optional[bool] = None,
+        exclude_all_address_required: typing.Optional[bool] = None,
+        exclude_local_address_required: typing.Optional[bool] = None,
+        exclude_foreign_address_required: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.List[AvailablePhoneNumber]:
+    ) -> AvailableNumbersResponse:
         """
         GET /api/v1/phone/numbers/twilio/available
 
@@ -108,30 +124,78 @@ class PhoneNumbersClient:
         Parameters
         ----------
         provider_id : str
-            Provider ID
+            Provider ID (required)
 
         country_code : str
-            ISO country code (e.g., US, GB)
+            ISO country code (required, e.g. "US", "GB", "CA")
 
         number_type : typing.Optional[str]
-            Number type: local, toll_free, or mobile
+            Number type: "local", "toll_free", or "mobile" (default: "local")
 
         area_code : typing.Optional[str]
             Area code filter (US/Canada only)
 
         contains : typing.Optional[str]
-            Pattern to match in the phone number
+            Pattern to match in the phone number (supports wildcards: *, %)
+
+        in_postal_code : typing.Optional[str]
+            Filter by postal/ZIP code (US/Canada only)
+
+        in_region : typing.Optional[str]
+            Filter by state/region (US/Canada only)
+
+        in_rate_center : typing.Optional[str]
+            Filter by rate center (US/Canada only, requires in_lata)
+
+        in_lata : typing.Optional[str]
+            Filter by LATA (US/Canada only)
+
+        in_locality : typing.Optional[str]
+            Filter by locality/city
+
+        near_number : typing.Optional[str]
+            Find numbers geographically close to this phone number
+
+        near_lat_long : typing.Optional[str]
+            Find numbers near lat,long (e.g. "37.7749,-122.4194")
+
+        distance : typing.Optional[int]
+            Distance radius in miles for geographic searches (default: 25, max: 500)
+
+        sms_enabled : typing.Optional[bool]
+            Filter for SMS-capable numbers
+
+        mms_enabled : typing.Optional[bool]
+            Filter for MMS-capable numbers
+
+        voice_enabled : typing.Optional[bool]
+            Filter for voice-capable numbers
+
+        fax_enabled : typing.Optional[bool]
+            Filter for fax-capable numbers
+
+        beta : typing.Optional[bool]
+            Filter for beta numbers (new to Twilio)
+
+        exclude_all_address_required : typing.Optional[bool]
+            Exclude numbers that require any address
+
+        exclude_local_address_required : typing.Optional[bool]
+            Exclude numbers that require a local address
+
+        exclude_foreign_address_required : typing.Optional[bool]
+            Exclude numbers that require a foreign address
 
         limit : typing.Optional[int]
-            Max results (default: 20, max: 1000)
+            Maximum number of results (default: 20, max: 1000)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        typing.List[AvailablePhoneNumber]
-            List of available numbers
+        AvailableNumbersResponse
+            Available numbers and the search that produced them
 
         Examples
         --------
@@ -151,6 +215,22 @@ class PhoneNumbersClient:
             number_type=number_type,
             area_code=area_code,
             contains=contains,
+            in_postal_code=in_postal_code,
+            in_region=in_region,
+            in_rate_center=in_rate_center,
+            in_lata=in_lata,
+            in_locality=in_locality,
+            near_number=near_number,
+            near_lat_long=near_lat_long,
+            distance=distance,
+            sms_enabled=sms_enabled,
+            mms_enabled=mms_enabled,
+            voice_enabled=voice_enabled,
+            fax_enabled=fax_enabled,
+            beta=beta,
+            exclude_all_address_required=exclude_all_address_required,
+            exclude_local_address_required=exclude_local_address_required,
+            exclude_foreign_address_required=exclude_foreign_address_required,
             limit=limit,
             request_options=request_options,
         )
@@ -538,9 +618,25 @@ class AsyncPhoneNumbersClient:
         number_type: typing.Optional[str] = None,
         area_code: typing.Optional[str] = None,
         contains: typing.Optional[str] = None,
+        in_postal_code: typing.Optional[str] = None,
+        in_region: typing.Optional[str] = None,
+        in_rate_center: typing.Optional[str] = None,
+        in_lata: typing.Optional[str] = None,
+        in_locality: typing.Optional[str] = None,
+        near_number: typing.Optional[str] = None,
+        near_lat_long: typing.Optional[str] = None,
+        distance: typing.Optional[int] = None,
+        sms_enabled: typing.Optional[bool] = None,
+        mms_enabled: typing.Optional[bool] = None,
+        voice_enabled: typing.Optional[bool] = None,
+        fax_enabled: typing.Optional[bool] = None,
+        beta: typing.Optional[bool] = None,
+        exclude_all_address_required: typing.Optional[bool] = None,
+        exclude_local_address_required: typing.Optional[bool] = None,
+        exclude_foreign_address_required: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.List[AvailablePhoneNumber]:
+    ) -> AvailableNumbersResponse:
         """
         GET /api/v1/phone/numbers/twilio/available
 
@@ -571,30 +667,78 @@ class AsyncPhoneNumbersClient:
         Parameters
         ----------
         provider_id : str
-            Provider ID
+            Provider ID (required)
 
         country_code : str
-            ISO country code (e.g., US, GB)
+            ISO country code (required, e.g. "US", "GB", "CA")
 
         number_type : typing.Optional[str]
-            Number type: local, toll_free, or mobile
+            Number type: "local", "toll_free", or "mobile" (default: "local")
 
         area_code : typing.Optional[str]
             Area code filter (US/Canada only)
 
         contains : typing.Optional[str]
-            Pattern to match in the phone number
+            Pattern to match in the phone number (supports wildcards: *, %)
+
+        in_postal_code : typing.Optional[str]
+            Filter by postal/ZIP code (US/Canada only)
+
+        in_region : typing.Optional[str]
+            Filter by state/region (US/Canada only)
+
+        in_rate_center : typing.Optional[str]
+            Filter by rate center (US/Canada only, requires in_lata)
+
+        in_lata : typing.Optional[str]
+            Filter by LATA (US/Canada only)
+
+        in_locality : typing.Optional[str]
+            Filter by locality/city
+
+        near_number : typing.Optional[str]
+            Find numbers geographically close to this phone number
+
+        near_lat_long : typing.Optional[str]
+            Find numbers near lat,long (e.g. "37.7749,-122.4194")
+
+        distance : typing.Optional[int]
+            Distance radius in miles for geographic searches (default: 25, max: 500)
+
+        sms_enabled : typing.Optional[bool]
+            Filter for SMS-capable numbers
+
+        mms_enabled : typing.Optional[bool]
+            Filter for MMS-capable numbers
+
+        voice_enabled : typing.Optional[bool]
+            Filter for voice-capable numbers
+
+        fax_enabled : typing.Optional[bool]
+            Filter for fax-capable numbers
+
+        beta : typing.Optional[bool]
+            Filter for beta numbers (new to Twilio)
+
+        exclude_all_address_required : typing.Optional[bool]
+            Exclude numbers that require any address
+
+        exclude_local_address_required : typing.Optional[bool]
+            Exclude numbers that require a local address
+
+        exclude_foreign_address_required : typing.Optional[bool]
+            Exclude numbers that require a foreign address
 
         limit : typing.Optional[int]
-            Max results (default: 20, max: 1000)
+            Maximum number of results (default: 20, max: 1000)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        typing.List[AvailablePhoneNumber]
-            List of available numbers
+        AvailableNumbersResponse
+            Available numbers and the search that produced them
 
         Examples
         --------
@@ -622,6 +766,22 @@ class AsyncPhoneNumbersClient:
             number_type=number_type,
             area_code=area_code,
             contains=contains,
+            in_postal_code=in_postal_code,
+            in_region=in_region,
+            in_rate_center=in_rate_center,
+            in_lata=in_lata,
+            in_locality=in_locality,
+            near_number=near_number,
+            near_lat_long=near_lat_long,
+            distance=distance,
+            sms_enabled=sms_enabled,
+            mms_enabled=mms_enabled,
+            voice_enabled=voice_enabled,
+            fax_enabled=fax_enabled,
+            beta=beta,
+            exclude_all_address_required=exclude_all_address_required,
+            exclude_local_address_required=exclude_local_address_required,
+            exclude_foreign_address_required=exclude_foreign_address_required,
             limit=limit,
             request_options=request_options,
         )

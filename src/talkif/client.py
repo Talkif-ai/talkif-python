@@ -10,6 +10,7 @@ from .core.logging import LogConfig, Logger
 from .environment import TalkifEnvironment
 
 if typing.TYPE_CHECKING:
+    from .accounts.client import AccountsClient, AsyncAccountsClient
     from .ai_models.client import AiModelsClient, AsyncAiModelsClient
     from .analytics.client import AnalyticsClient, AsyncAnalyticsClient
     from .billing.client import AsyncBillingClient, BillingClient
@@ -25,6 +26,7 @@ if typing.TYPE_CHECKING:
     from .phone_providers.client import AsyncPhoneProvidersClient, PhoneProvidersClient
     from .public_calls.client import AsyncPublicCallsClient, PublicCallsClient
     from .schedules.client import AsyncSchedulesClient, SchedulesClient
+    from .transfers.client import AsyncTransfersClient, TransfersClient
 
 
 class Talkif:
@@ -122,10 +124,12 @@ class Talkif:
         self._flow_templates: typing.Optional[FlowTemplatesClient] = None
         self._flows: typing.Optional[FlowsClient] = None
         self._ai_models: typing.Optional[AiModelsClient] = None
+        self._accounts: typing.Optional[AccountsClient] = None
         self._phone_numbers: typing.Optional[PhoneNumbersClient] = None
         self._phone_providers: typing.Optional[PhoneProvidersClient] = None
         self._public_calls: typing.Optional[PublicCallsClient] = None
         self._schedules: typing.Optional[SchedulesClient] = None
+        self._transfers: typing.Optional[TransfersClient] = None
 
     @property
     def billing(self):
@@ -216,6 +220,14 @@ class Talkif:
         return self._ai_models
 
     @property
+    def accounts(self):
+        if self._accounts is None:
+            from .accounts.client import AccountsClient  # noqa: E402
+
+            self._accounts = AccountsClient(client_wrapper=self._client_wrapper)
+        return self._accounts
+
+    @property
     def phone_numbers(self):
         if self._phone_numbers is None:
             from .phone_numbers.client import PhoneNumbersClient  # noqa: E402
@@ -246,6 +258,14 @@ class Talkif:
 
             self._schedules = SchedulesClient(client_wrapper=self._client_wrapper)
         return self._schedules
+
+    @property
+    def transfers(self):
+        if self._transfers is None:
+            from .transfers.client import TransfersClient  # noqa: E402
+
+            self._transfers = TransfersClient(client_wrapper=self._client_wrapper)
+        return self._transfers
 
 
 def _make_default_async_client(
@@ -364,10 +384,12 @@ class AsyncTalkif:
         self._flow_templates: typing.Optional[AsyncFlowTemplatesClient] = None
         self._flows: typing.Optional[AsyncFlowsClient] = None
         self._ai_models: typing.Optional[AsyncAiModelsClient] = None
+        self._accounts: typing.Optional[AsyncAccountsClient] = None
         self._phone_numbers: typing.Optional[AsyncPhoneNumbersClient] = None
         self._phone_providers: typing.Optional[AsyncPhoneProvidersClient] = None
         self._public_calls: typing.Optional[AsyncPublicCallsClient] = None
         self._schedules: typing.Optional[AsyncSchedulesClient] = None
+        self._transfers: typing.Optional[AsyncTransfersClient] = None
 
     @property
     def billing(self):
@@ -458,6 +480,14 @@ class AsyncTalkif:
         return self._ai_models
 
     @property
+    def accounts(self):
+        if self._accounts is None:
+            from .accounts.client import AsyncAccountsClient  # noqa: E402
+
+            self._accounts = AsyncAccountsClient(client_wrapper=self._client_wrapper)
+        return self._accounts
+
+    @property
     def phone_numbers(self):
         if self._phone_numbers is None:
             from .phone_numbers.client import AsyncPhoneNumbersClient  # noqa: E402
@@ -488,6 +518,14 @@ class AsyncTalkif:
 
             self._schedules = AsyncSchedulesClient(client_wrapper=self._client_wrapper)
         return self._schedules
+
+    @property
+    def transfers(self):
+        if self._transfers is None:
+            from .transfers.client import AsyncTransfersClient  # noqa: E402
+
+            self._transfers = AsyncTransfersClient(client_wrapper=self._client_wrapper)
+        return self._transfers
 
 
 def _get_base_url(*, base_url: typing.Optional[str] = None, environment: TalkifEnvironment) -> str:

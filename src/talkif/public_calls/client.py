@@ -33,7 +33,7 @@ class PublicCallsClient:
 
     def create_call(self, *, request_options: typing.Optional[RequestOptions] = None) -> CreateWebRtcCallResponse:
         """
-        POST /api/v1/public/calls/calls
+        POST /api/v1/public/calls
 
         Parameters
         ----------
@@ -55,90 +55,6 @@ class PublicCallsClient:
         client.public_calls.create_call()
         """
         _response = self._raw_client.create_call(request_options=request_options)
-        return _response.data
-
-    def get_call_status(
-        self, call_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> PublicCallStatusResponse:
-        """
-        GET /api/v1/public/calls/calls/{callId}
-
-        Parameters
-        ----------
-        call_id : str
-            Call ID
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        PublicCallStatusResponse
-            Call status
-
-        Examples
-        --------
-        from talkif import Talkif
-
-        client = Talkif(
-            token="YOUR_TOKEN",
-        )
-        client.public_calls.get_call_status(
-            call_id="callId",
-        )
-        """
-        _response = self._raw_client.get_call_status(call_id, request_options=request_options)
-        return _response.data
-
-    def relay_offer(
-        self,
-        call_id: str,
-        *,
-        sdp: str,
-        ice_servers: typing.Optional[typing.Sequence[IceServerEntry]] = OMIT,
-        use_smart_turn: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> WebRtcOfferResponse:
-        """
-        POST /api/v1/public/calls/calls/{callId}/offer
-
-        Parameters
-        ----------
-        call_id : str
-            Call ID
-
-        sdp : str
-            WebRTC SDP offer string
-
-        ice_servers : typing.Optional[typing.Sequence[IceServerEntry]]
-            ICE servers to forward to the bot for WebRTC connection
-
-        use_smart_turn : typing.Optional[bool]
-            Whether to use smart TURN server selection
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        WebRtcOfferResponse
-            SDP answer
-
-        Examples
-        --------
-        from talkif import Talkif
-
-        client = Talkif(
-            token="YOUR_TOKEN",
-        )
-        client.public_calls.relay_offer(
-            call_id="callId",
-            sdp="v=0\r\no=- 0 0 IN IP4 127.0.0.1\r\n...",
-        )
-        """
-        _response = self._raw_client.relay_offer(
-            call_id, sdp=sdp, ice_servers=ice_servers, use_smart_turn=use_smart_turn, request_options=request_options
-        )
         return _response.data
 
     def get_ice_servers(self, *, request_options: typing.Optional[RequestOptions] = None) -> IceServersResponse:
@@ -209,6 +125,120 @@ class PublicCallsClient:
         )
         return _response.data
 
+    def get_call_status(
+        self, call_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> PublicCallStatusResponse:
+        """
+        GET /api/v1/public/calls/{callId}
+
+        Parameters
+        ----------
+        call_id : str
+            Call ID
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PublicCallStatusResponse
+            Call status
+
+        Examples
+        --------
+        from talkif import Talkif
+
+        client = Talkif(
+            token="YOUR_TOKEN",
+        )
+        client.public_calls.get_call_status(
+            call_id="callId",
+        )
+        """
+        _response = self._raw_client.get_call_status(call_id, request_options=request_options)
+        return _response.data
+
+    def end_call(self, call_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        POST /api/v1/public/calls/{callId}/end
+
+        Parameters
+        ----------
+        call_id : str
+            Call ID
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from talkif import Talkif
+
+        client = Talkif(
+            token="YOUR_TOKEN",
+        )
+        client.public_calls.end_call(
+            call_id="callId",
+        )
+        """
+        _response = self._raw_client.end_call(call_id, request_options=request_options)
+        return _response.data
+
+    def relay_offer(
+        self,
+        call_id: str,
+        *,
+        sdp: str,
+        ice_servers: typing.Optional[typing.Sequence[IceServerEntry]] = OMIT,
+        use_smart_turn: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> WebRtcOfferResponse:
+        """
+        POST /api/v1/public/calls/{callId}/offer
+
+        Parameters
+        ----------
+        call_id : str
+            Call ID
+
+        sdp : str
+            WebRTC SDP offer string
+
+        ice_servers : typing.Optional[typing.Sequence[IceServerEntry]]
+            ICE servers to forward to the bot for WebRTC connection
+
+        use_smart_turn : typing.Optional[bool]
+            Whether to use smart TURN server selection
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        WebRtcOfferResponse
+            SDP answer
+
+        Examples
+        --------
+        from talkif import Talkif
+
+        client = Talkif(
+            token="YOUR_TOKEN",
+        )
+        client.public_calls.relay_offer(
+            call_id="callId",
+            sdp="v=0\r\no=- 0 0 IN IP4 127.0.0.1\r\n...",
+        )
+        """
+        _response = self._raw_client.relay_offer(
+            call_id, sdp=sdp, ice_servers=ice_servers, use_smart_turn=use_smart_turn, request_options=request_options
+        )
+        return _response.data
+
 
 class AsyncPublicCallsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -227,7 +257,7 @@ class AsyncPublicCallsClient:
 
     async def create_call(self, *, request_options: typing.Optional[RequestOptions] = None) -> CreateWebRtcCallResponse:
         """
-        POST /api/v1/public/calls/calls
+        POST /api/v1/public/calls
 
         Parameters
         ----------
@@ -257,106 +287,6 @@ class AsyncPublicCallsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.create_call(request_options=request_options)
-        return _response.data
-
-    async def get_call_status(
-        self, call_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> PublicCallStatusResponse:
-        """
-        GET /api/v1/public/calls/calls/{callId}
-
-        Parameters
-        ----------
-        call_id : str
-            Call ID
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        PublicCallStatusResponse
-            Call status
-
-        Examples
-        --------
-        import asyncio
-
-        from talkif import AsyncTalkif
-
-        client = AsyncTalkif(
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.public_calls.get_call_status(
-                call_id="callId",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.get_call_status(call_id, request_options=request_options)
-        return _response.data
-
-    async def relay_offer(
-        self,
-        call_id: str,
-        *,
-        sdp: str,
-        ice_servers: typing.Optional[typing.Sequence[IceServerEntry]] = OMIT,
-        use_smart_turn: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> WebRtcOfferResponse:
-        """
-        POST /api/v1/public/calls/calls/{callId}/offer
-
-        Parameters
-        ----------
-        call_id : str
-            Call ID
-
-        sdp : str
-            WebRTC SDP offer string
-
-        ice_servers : typing.Optional[typing.Sequence[IceServerEntry]]
-            ICE servers to forward to the bot for WebRTC connection
-
-        use_smart_turn : typing.Optional[bool]
-            Whether to use smart TURN server selection
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        WebRtcOfferResponse
-            SDP answer
-
-        Examples
-        --------
-        import asyncio
-
-        from talkif import AsyncTalkif
-
-        client = AsyncTalkif(
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.public_calls.relay_offer(
-                call_id="callId",
-                sdp="v=0\r\no=- 0 0 IN IP4 127.0.0.1\r\n...",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.relay_offer(
-            call_id, sdp=sdp, ice_servers=ice_servers, use_smart_turn=use_smart_turn, request_options=request_options
-        )
         return _response.data
 
     async def get_ice_servers(self, *, request_options: typing.Optional[RequestOptions] = None) -> IceServersResponse:
@@ -440,5 +370,143 @@ class AsyncPublicCallsClient:
         """
         _response = await self._raw_client.create_session(
             publishable_key=publishable_key, turnstile_token=turnstile_token, request_options=request_options
+        )
+        return _response.data
+
+    async def get_call_status(
+        self, call_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> PublicCallStatusResponse:
+        """
+        GET /api/v1/public/calls/{callId}
+
+        Parameters
+        ----------
+        call_id : str
+            Call ID
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PublicCallStatusResponse
+            Call status
+
+        Examples
+        --------
+        import asyncio
+
+        from talkif import AsyncTalkif
+
+        client = AsyncTalkif(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.public_calls.get_call_status(
+                call_id="callId",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_call_status(call_id, request_options=request_options)
+        return _response.data
+
+    async def end_call(self, call_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        POST /api/v1/public/calls/{callId}/end
+
+        Parameters
+        ----------
+        call_id : str
+            Call ID
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from talkif import AsyncTalkif
+
+        client = AsyncTalkif(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.public_calls.end_call(
+                call_id="callId",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.end_call(call_id, request_options=request_options)
+        return _response.data
+
+    async def relay_offer(
+        self,
+        call_id: str,
+        *,
+        sdp: str,
+        ice_servers: typing.Optional[typing.Sequence[IceServerEntry]] = OMIT,
+        use_smart_turn: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> WebRtcOfferResponse:
+        """
+        POST /api/v1/public/calls/{callId}/offer
+
+        Parameters
+        ----------
+        call_id : str
+            Call ID
+
+        sdp : str
+            WebRTC SDP offer string
+
+        ice_servers : typing.Optional[typing.Sequence[IceServerEntry]]
+            ICE servers to forward to the bot for WebRTC connection
+
+        use_smart_turn : typing.Optional[bool]
+            Whether to use smart TURN server selection
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        WebRtcOfferResponse
+            SDP answer
+
+        Examples
+        --------
+        import asyncio
+
+        from talkif import AsyncTalkif
+
+        client = AsyncTalkif(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.public_calls.relay_offer(
+                call_id="callId",
+                sdp="v=0\r\no=- 0 0 IN IP4 127.0.0.1\r\n...",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.relay_offer(
+            call_id, sdp=sdp, ice_servers=ice_servers, use_smart_turn=use_smart_turn, request_options=request_options
         )
         return _response.data

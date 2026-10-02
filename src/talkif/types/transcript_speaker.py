@@ -2,4 +2,4 @@
 
 import typing
 
-TranscriptSpeaker = typing.Union[typing.Literal["ai", "human"], typing.Any]
+TranscriptSpeaker = typing.Union[typing.Literal["ai", "human", "colleague"], typing.Any]
