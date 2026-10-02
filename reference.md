@@ -720,6 +720,209 @@ client.billing.get_public_pricing()
 </details>
 
 ## Calls
+<details><summary><code>client.calls.<a href="src/talkif/calls/client.py">list_calls</a>(...) -> CallListResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the account's calls, newest first, with optional filters. Use `status` to narrow to live calls (for example `in_progress`), `flowId` / `campaignId` / `contactId` to scope by resource, and `startDate` / `endDate` for a time window.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.calls.list_calls()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Maximum number of items to return (default: 20, max: 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Number of items to skip for pagination (default: 0)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**start_date:** `typing.Optional[datetime.datetime]` — Only include calls after this timestamp (inclusive)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**end_date:** `typing.Optional[datetime.datetime]` — Only include calls before this timestamp (inclusive)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[CallStatus]` — Filter by call status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**direction:** `typing.Optional[CallDirection]` — Filter by call direction
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**source:** `typing.Optional[CallSource]` — Filter by call source (direct, scheduled, campaign)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phone_number:** `typing.Optional[str]` — Filter by phone number — matches either the from or to number (E.164)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_lead:** `typing.Optional[bool]` — Filter by whether the call was triggered by a Meta lead form (true = lead-driven only)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**flow_id:** `typing.Optional[str]` — Filter by flow ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**contact_id:** `typing.Optional[str]` — Filter by contact ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**schedule_id:** `typing.Optional[str]` — Filter by schedule ID (for scheduled calls)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**campaign_id:** `typing.Optional[str]` — Filter by campaign ID (for campaign calls)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**provider_type:** `typing.Optional[CallProviderType]` — Filter by telephony provider type (channel)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**search:** `typing.Optional[str]` 
+
+Free-text search across the contact name and the raw from/to phone
+numbers (case-insensitive substring). Matches calls to/from numbers that
+were never saved as contacts.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort_by:** `typing.Optional[CallSortField]` — Field to sort results by (default: creation time)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort_direction:** `typing.Optional[SortDirection]` — Sort direction for `sortBy` (default: desc)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.calls.<a href="src/talkif/calls/client.py">make_call</a>(...) -> MakeCallResponse</code></summary>
 <dl>
 <dd>
@@ -855,272 +1058,6 @@ client.calls.make_call(
 <dd>
 
 **source:** `typing.Optional[CallSource]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.calls.<a href="src/talkif/calls/client.py">get_active_calls</a>(...) -> CallListResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-GET /api/v1/calls/active
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from talkif import Talkif
-from talkif.environment import TalkifEnvironment
-
-client = Talkif(
-    token="<token>",
-    environment=TalkifEnvironment.PRODUCTION,
-)
-
-client.calls.get_active_calls()
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` — Max items to return (1-100, default 10)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**offset:** `typing.Optional[int]` — Items to skip (default 0)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.calls.<a href="src/talkif/calls/client.py">get_call_history</a>(...) -> CallListResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-GET /api/v1/calls/history
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from talkif import Talkif
-from talkif.environment import TalkifEnvironment
-
-client = Talkif(
-    token="<token>",
-    environment=TalkifEnvironment.PRODUCTION,
-)
-
-client.calls.get_call_history()
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` — Maximum number of items to return (default: 20, max: 100)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**offset:** `typing.Optional[int]` — Number of items to skip for pagination (default: 0)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**start_date:** `typing.Optional[datetime.datetime]` — Only include calls after this timestamp (inclusive)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**end_date:** `typing.Optional[datetime.datetime]` — Only include calls before this timestamp (inclusive)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**status:** `typing.Optional[CallStatus]` — Filter by call status
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**direction:** `typing.Optional[CallDirection]` — Filter by call direction
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**source:** `typing.Optional[CallSource]` — Filter by call source (direct, scheduled, campaign)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**phone_number:** `typing.Optional[str]` — Filter by phone number — matches either the from or to number (E.164)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**is_lead:** `typing.Optional[bool]` — Filter by whether the call was triggered by a Meta lead form (true = lead-driven only)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**flow_id:** `typing.Optional[str]` — Filter by flow ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**contact_id:** `typing.Optional[str]` — Filter by contact ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**schedule_id:** `typing.Optional[str]` — Filter by schedule ID (for scheduled calls)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**campaign_id:** `typing.Optional[str]` — Filter by campaign ID (for campaign calls)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**provider_type:** `typing.Optional[CallProviderType]` — Filter by telephony provider type (channel)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**search:** `typing.Optional[str]` 
-
-Free-text search across the contact name and the raw from/to phone
-numbers (case-insensitive substring). Matches calls to/from numbers that
-were never saved as contacts.
     
 </dd>
 </dl>
@@ -1396,7 +1333,8 @@ DELETE /api/v1/calls/:callId/recording → 204
 Charges for actual storage duration before deletion (billing at lifecycle end).
 Uses idempotency key to prevent double-charging if racing with retention job.
 
-SECURITY: Verifies account access, call ownership.
+Owner or admin only: deleting a recording destroys data the account may
+need to keep. With an API key, the key's creator must be an owner or admin.
 </dd>
 </dl>
 </dd>
@@ -6410,6 +6348,135 @@ client.ai_models.list_tts_voices()
 </dl>
 </details>
 
+## Accounts
+<details><summary><code>client.accounts.<a href="src/talkif/accounts/client.py">get_permissions</a>() -> PermissionsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Your role in the account and the permissions it grants, for showing or
+hiding actions. The server enforces them regardless.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.accounts.get_permissions()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.accounts.<a href="src/talkif/accounts/client.py">get_roles</a>() -> RolesResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Every built-in role with the permissions it grants in the selected
+account, for showing what each role may do.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.accounts.get_roles()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Phone Numbers
 <details><summary><code>client.phone_numbers.<a href="src/talkif/phone_numbers/client.py">list_phone_numbers</a>(...) -> PhoneNumberListResponse</code></summary>
 <dl>
@@ -6490,7 +6557,7 @@ client.phone_numbers.list_phone_numbers()
 </dl>
 </details>
 
-<details><summary><code>client.phone_numbers.<a href="src/talkif/phone_numbers/client.py">list_available_numbers</a>(...) -> typing.List[AvailablePhoneNumber]</code></summary>
+<details><summary><code>client.phone_numbers.<a href="src/talkif/phone_numbers/client.py">list_available_numbers</a>(...) -> AvailableNumbersResponse</code></summary>
 <dl>
 <dd>
 
@@ -6568,7 +6635,7 @@ client.phone_numbers.list_available_numbers(
 <dl>
 <dd>
 
-**provider_id:** `str` — Provider ID
+**provider_id:** `str` — Provider ID (required)
     
 </dd>
 </dl>
@@ -6576,7 +6643,7 @@ client.phone_numbers.list_available_numbers(
 <dl>
 <dd>
 
-**country_code:** `str` — ISO country code (e.g., US, GB)
+**country_code:** `str` — ISO country code (required, e.g. "US", "GB", "CA")
     
 </dd>
 </dl>
@@ -6584,7 +6651,7 @@ client.phone_numbers.list_available_numbers(
 <dl>
 <dd>
 
-**number_type:** `typing.Optional[str]` — Number type: local, toll_free, or mobile
+**number_type:** `typing.Optional[str]` — Number type: "local", "toll_free", or "mobile" (default: "local")
     
 </dd>
 </dl>
@@ -6600,7 +6667,7 @@ client.phone_numbers.list_available_numbers(
 <dl>
 <dd>
 
-**contains:** `typing.Optional[str]` — Pattern to match in the phone number
+**contains:** `typing.Optional[str]` — Pattern to match in the phone number (supports wildcards: *, %)
     
 </dd>
 </dl>
@@ -6608,7 +6675,135 @@ client.phone_numbers.list_available_numbers(
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Max results (default: 20, max: 1000)
+**in_postal_code:** `typing.Optional[str]` — Filter by postal/ZIP code (US/Canada only)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**in_region:** `typing.Optional[str]` — Filter by state/region (US/Canada only)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**in_rate_center:** `typing.Optional[str]` — Filter by rate center (US/Canada only, requires in_lata)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**in_lata:** `typing.Optional[str]` — Filter by LATA (US/Canada only)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**in_locality:** `typing.Optional[str]` — Filter by locality/city
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**near_number:** `typing.Optional[str]` — Find numbers geographically close to this phone number
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**near_lat_long:** `typing.Optional[str]` — Find numbers near lat,long (e.g. "37.7749,-122.4194")
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**distance:** `typing.Optional[int]` — Distance radius in miles for geographic searches (default: 25, max: 500)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sms_enabled:** `typing.Optional[bool]` — Filter for SMS-capable numbers
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mms_enabled:** `typing.Optional[bool]` — Filter for MMS-capable numbers
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**voice_enabled:** `typing.Optional[bool]` — Filter for voice-capable numbers
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fax_enabled:** `typing.Optional[bool]` — Filter for fax-capable numbers
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**beta:** `typing.Optional[bool]` — Filter for beta numbers (new to Twilio)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_all_address_required:** `typing.Optional[bool]` — Exclude numbers that require any address
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_local_address_required:** `typing.Optional[bool]` — Exclude numbers that require a local address
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exclude_foreign_address_required:** `typing.Optional[bool]` — Exclude numbers that require a foreign address
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Maximum number of results (default: 20, max: 1000)
     
 </dd>
 </dl>
@@ -7437,7 +7632,7 @@ client.phone_providers.get_provider(
 <dl>
 <dd>
 
-POST /api/v1/public/calls/calls
+POST /api/v1/public/calls
 </dd>
 </dl>
 </dd>
@@ -7472,177 +7667,6 @@ client.public_calls.create_call()
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.public_calls.<a href="src/talkif/public_calls/client.py">get_call_status</a>(...) -> PublicCallStatusResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-GET /api/v1/public/calls/calls/{callId}
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from talkif import Talkif
-from talkif.environment import TalkifEnvironment
-
-client = Talkif(
-    token="<token>",
-    environment=TalkifEnvironment.PRODUCTION,
-)
-
-client.public_calls.get_call_status(
-    call_id="callId",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**call_id:** `str` — Call ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.public_calls.<a href="src/talkif/public_calls/client.py">relay_offer</a>(...) -> WebRtcOfferResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-POST /api/v1/public/calls/calls/{callId}/offer
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from talkif import Talkif
-from talkif.environment import TalkifEnvironment
-
-client = Talkif(
-    token="<token>",
-    environment=TalkifEnvironment.PRODUCTION,
-)
-
-client.public_calls.relay_offer(
-    call_id="callId",
-    sdp="v=0\r\no=- 0 0 IN IP4 127.0.0.1\r\n...",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**call_id:** `str` — Call ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**sdp:** `str` — WebRTC SDP offer string
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**ice_servers:** `typing.Optional[typing.List[IceServerEntry]]` — ICE servers to forward to the bot for WebRTC connection
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**use_smart_turn:** `typing.Optional[bool]` — Whether to use smart TURN server selection
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -7784,6 +7808,250 @@ client.public_calls.create_session(
 <dd>
 
 **turnstile_token:** `typing.Optional[str]` — Cloudflare Turnstile token (required once the bot gate is active)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.public_calls.<a href="src/talkif/public_calls/client.py">get_call_status</a>(...) -> PublicCallStatusResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+GET /api/v1/public/calls/{callId}
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.public_calls.get_call_status(
+    call_id="callId",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**call_id:** `str` — Call ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.public_calls.<a href="src/talkif/public_calls/client.py">end_call</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+POST /api/v1/public/calls/{callId}/end
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.public_calls.end_call(
+    call_id="callId",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**call_id:** `str` — Call ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.public_calls.<a href="src/talkif/public_calls/client.py">relay_offer</a>(...) -> WebRtcOfferResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+POST /api/v1/public/calls/{callId}/offer
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.public_calls.relay_offer(
+    call_id="callId",
+    sdp="v=0\r\no=- 0 0 IN IP4 127.0.0.1\r\n...",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**call_id:** `str` — Call ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sdp:** `str` — WebRTC SDP offer string
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ice_servers:** `typing.Optional[typing.List[IceServerEntry]]` — ICE servers to forward to the bot for WebRTC connection
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**use_smart_turn:** `typing.Optional[bool]` — Whether to use smart TURN server selection
     
 </dd>
 </dl>
@@ -8418,6 +8686,2028 @@ client.schedules.resume_schedule(
 <dd>
 
 **schedule_id:** `str` — Schedule ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Transfers
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">list_groups</a>(...) -> DestinationGroupListResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Destination groups are named sets of destinations that ring together as one
+transfer target.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.list_groups()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page size
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">create_group</a>(...) -> DestinationGroup</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+A destination group is a named set of destinations that ring together as
+one transfer target. With the `simultaneous` strategy every member rings at
+once and the first to answer is connected.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif, DestinationGroupMember
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.create_group(
+    members=[
+        DestinationGroupMember(
+            destination_id="destinationId",
+        )
+    ],
+    name="Sales team",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**members:** `typing.List[DestinationGroupMember]` — 1–10 destinations of this account, in ring order.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `str` — Display name, unique per account (1–100 characters).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**strategy:** `typing.Optional[str]` — `simultaneous` (default): ring every member at once, first to answer wins.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_timeout_secs:** `typing.Optional[int]` — Upper bound for the whole attempt, 5–60 seconds. Default 30.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">get_group</a>(...) -> DestinationGroup</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+A named set of destinations that ring together as one transfer target.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.get_group(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — Destination group ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">update_group</a>(...) -> DestinationGroup</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Omitted fields keep their value; `members` replaces the whole list.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.update_group(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — Destination group ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**members:** `typing.Optional[typing.List[DestinationGroupMember]]` — Replaces the whole member list.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**strategy:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total_timeout_secs:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">delete_group</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Refused with `in_use` while a published flow transfers to it; `meta.flows`
+names them.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.delete_group(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — Destination group ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">list_destinations</a>(...) -> TransferDestinationListResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Destinations are the places a flow's Transfer node can send a call: a phone
+number, the people who are available for calls in the dashboard, or your
+own app.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.list_destinations()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Page size
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**offset:** `typing.Optional[int]` — Page offset
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">create_destination</a>(...) -> TransferDestination</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+A destination is somewhere a Transfer node can send a call: a phone number,
+the people who are available for calls in the dashboard, or your own app
+(`app`: offers arrive as signed `transfer.offer` webhooks; the response
+carries the signing secret once, in `signingSecret`). Emergency,
+special-service and premium-rate numbers are refused.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.create_destination(
+    config={
+        "key": "value"
+    },
+    kind="phone",
+    name="Sales desk",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**config:** `typing.Dict[str, typing.Any]` 
+
+Kind-specific settings. For `app`: `{ "url": "https://..." }`, the HTTPS endpoint that
+receives signed `transfer.offer` webhooks; the signing secret is returned once, in the
+create response. For `available_humans`: `{ "userIds": null }` (everyone
+available) or `{ "userIds": ["<user id>", ...] }`, plus optional `"tags": ["sales", ...]`
+to ring only members with any of those tags (team accounts); members are rung only
+within their available hours. For `phone`: `{ "number": "+E164", "callerId": "did" | "caller",
+"fromNumberId"?: "<id of one of your phone numbers>" }`. `fromNumberId` picks the number
+that places the call; when omitted, the number the original call came in on is used.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**kind:** `str` 
+
+Destination kind: `phone`, `available_humans` (the people who are
+available for calls in the dashboard), or `app` (your own server)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `str` — Display name, unique per account (1–100 characters).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**enabled:** `typing.Optional[bool]` — Disabled destinations are skipped when a transfer rings. Default `true`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">get_destination</a>(...) -> TransferDestination</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+One place a flow's Transfer node can send a call.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.get_destination(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — Destination ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">update_destination</a>(...) -> TransferDestination</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+The kind cannot change. Sending `config` replaces the whole settings object.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.update_destination(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — Destination ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**config:** `typing.Optional[typing.Dict[str, typing.Any]]` — Replaces the whole kind-specific settings object.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**enabled:** `typing.Optional[bool]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">delete_destination</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Refused with `in_use` while a destination group lists it or a published
+flow transfers to it; `meta.groups` and `meta.flows` name them.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.delete_destination(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — Destination ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">list_deliveries</a>(...) -> TransferAppDeliveryListResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+The last 20 webhook deliveries (test sends and real offers), newest first.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.list_deliveries(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — Destination ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">rotate_secret</a>(...) -> TransferDestination</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Replaces the secret that signs `transfer.offer` webhooks and returns the new
+one once, in `signingSecret`. For 24 hours, until `previousSecretExpiresAt`,
+webhooks carry a second signature made with the previous secret
+(`Talkif-Signature: t=…,v1=<new>,v1=<previous>`), so your server can switch
+secrets without missing an offer.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.rotate_secret(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — Destination ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">test_destination</a>(...) -> TransferAppDeliveryResult</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Sends a sample `transfer.offer` webhook (fake caller, `"test": true`),
+signed like a real one, and reports how your server answered. Test offers
+cannot be accepted. The delivery is logged. At most 5 test sends per
+destination per minute and 30 per account per hour.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.test_destination(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — Destination ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">list_member_tags</a>() -> MemberTagCatalogResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Every tag at least one member of your organization carries, with how many
+members carry it. Use these in an `available_humans` destination's `tags`
+to ring only that team. Empty on a personal account.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.list_member_tags()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">list_members</a>() -> TransferMemberListResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Every member of your organization, with the tags and weekly available
+hours that decide which transfers to people ring them. Tags and hours
+belong to the organization: the same member has the same tags and hours
+in every account of the organization. On a personal account the list is
+empty.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.list_members()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">get_member_availability</a>(...) -> MemberAvailability</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Whether the member takes transferred calls: `available`, `away` or
+`offline` (with the end time, who set it, and whether they are on a call
+right now). An away/offline whose end time passed reads as `available`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.get_member_availability(
+    member_id="memberId",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**member_id:** `str` — Membership ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">set_member_availability</a>(...) -> MemberAvailability</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Turns transferred calls on or off for a member, in every account of the
+organization: `away` or `offline`, optionally `until` a moment (then the
+member is available again by itself), or `available`. The member may set
+any status. An owner or admin may set another member `away` or
+`offline`, and may make them `available` again only if the member did not
+turn calls off themselves.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.set_member_availability(
+    member_id="memberId",
+    status="available",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**member_id:** `str` — Membership ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `MemberAvailabilityStatus` — `available`, `away` or `offline`
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**until:** `typing.Optional[datetime.datetime]` 
+
+For `away`/`offline`: when it ends by itself (RFC 3339, in the future,
+at most 30 days ahead). Omit for "until I change it". Not allowed with
+`available`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">get_member_hours</a>(...) -> MemberHoursResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.get_member_hours(
+    member_id="memberId",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**member_id:** `str` — Membership ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">set_member_hours</a>(...) -> MemberHoursResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Sets the weekly schedule inside which transfers to people ring this
+member. Outside it the member is skipped even when available for calls;
+if nobody is left, the destination's nobody-available path runs. Hours
+belong to the organization and apply in every account of it. The member
+themselves, or an owner or admin.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif, MemberWeeklyHours
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.set_member_hours(
+    member_id="memberId",
+    timezone="Europe/Istanbul",
+    weekly=MemberWeeklyHours(),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**member_id:** `str` — Membership ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `MemberHours` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">delete_member_hours</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Removes the schedule: the member is always within hours again. The member
+themselves, or an owner or admin.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.delete_member_hours(
+    member_id="memberId",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**member_id:** `str` — Membership ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">get_member_tags</a>(...) -> MemberTagsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.get_member_tags(
+    member_id="memberId",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**member_id:** `str` — Membership ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">set_member_tags</a>(...) -> MemberTagsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Sets the member's complete tag list. Tags group members into teams for
+transfers: an `available_humans` destination with `tags` rings only
+members carrying at least one of them. Tags belong to the organization,
+so the change applies in every account of the organization. Owner or
+admin only.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.set_member_tags(
+    member_id="memberId",
+    tags=[
+        "sales",
+        "billing"
+    ],
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**member_id:** `str` — Membership ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tags:** `typing.List[str]` 
+
+The member's complete tag list; it replaces the current one. Tags are
+normalized: trimmed, lowercased, spaces become `-`. Allowed: `a`–`z`,
+`ı ğ ü ş ö ç`, digits, `-` and `_`, at most 32 characters each, at most
+20 tags. An empty list removes every tag.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">get_offer</a>(...) -> TransferOffer</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+A ringing offer to one of your app destinations: the same body as the
+`transfer.offer` webhook. Only offers to app destinations of this account
+are visible. Requires an API key with the `transfer_offers:read` scope.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.get_offer(
+    offer_id="offerId",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**offer_id:** `str` — Offer ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">accept_offer</a>(...) -> TransferOfferAcceptResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+The first accept wins; accept before `acceptUntil`. Without a body the
+reply carries a single-use WebSocket `joinUrl` for the call's audio; with
+`{"sdpOffer": "<SDP>"}` the call joins over WebRTC and the reply carries
+the SDP answer and ICE servers. Join within 10 seconds (20 for WebRTC) or
+the offer counts as unanswered. Requires an API key with the
+`transfer_offers:write` scope; repeating the accept with the same key
+returns a new join.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif, AcceptTransferOfferRequest
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.accept_offer(
+    offer_id="offerId",
+    request=AcceptTransferOfferRequest(),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**offer_id:** `str` — Offer ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `typing.Optional[AcceptTransferOfferRequest]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.transfers.<a href="src/talkif/transfers/client.py">decline_offer</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Your app will not take this call: the transfer stops ringing it at once.
+Declining an offer that already ended, or that was already accepted, does
+nothing. Requires an API key with the `transfer_offers:write` scope.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from talkif import Talkif
+from talkif.environment import TalkifEnvironment
+
+client = Talkif(
+    token="<token>",
+    environment=TalkifEnvironment.PRODUCTION,
+)
+
+client.transfers.decline_offer(
+    offer_id="offerId",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**offer_id:** `str` — Offer ID
     
 </dd>
 </dl>

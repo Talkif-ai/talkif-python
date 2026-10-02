@@ -9,7 +9,6 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.datetime_utils import serialize_datetime
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import encode_path_param
-from ..core.pagination import AsyncPager, SyncPager
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
@@ -27,12 +26,14 @@ from ..types.call_insights import CallInsights
 from ..types.call_list_response import CallListResponse
 from ..types.call_provider_type import CallProviderType
 from ..types.call_response import CallResponse
+from ..types.call_sort_field import CallSortField
 from ..types.call_source import CallSource
 from ..types.call_status import CallStatus
 from ..types.call_transcript_response import CallTranscriptResponse
 from ..types.error_response import ErrorResponse
 from ..types.make_call_response import MakeCallResponse
 from ..types.recording_url_response import RecordingUrlResponse
+from ..types.sort_direction import SortDirection
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
@@ -42,6 +43,181 @@ OMIT = typing.cast(typing.Any, ...)
 class RawCallsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
+
+    def list_calls(
+        self,
+        *,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        status: typing.Optional[CallStatus] = None,
+        direction: typing.Optional[CallDirection] = None,
+        source: typing.Optional[CallSource] = None,
+        phone_number: typing.Optional[str] = None,
+        is_lead: typing.Optional[bool] = None,
+        flow_id: typing.Optional[str] = None,
+        contact_id: typing.Optional[str] = None,
+        schedule_id: typing.Optional[str] = None,
+        campaign_id: typing.Optional[str] = None,
+        provider_type: typing.Optional[CallProviderType] = None,
+        search: typing.Optional[str] = None,
+        sort_by: typing.Optional[CallSortField] = None,
+        sort_direction: typing.Optional[SortDirection] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[CallListResponse]:
+        """
+        Returns the account's calls, newest first, with optional filters. Use `status` to narrow to live calls (for example `in_progress`), `flowId` / `campaignId` / `contactId` to scope by resource, and `startDate` / `endDate` for a time window.
+
+        Parameters
+        ----------
+        limit : typing.Optional[int]
+            Maximum number of items to return (default: 20, max: 100)
+
+        offset : typing.Optional[int]
+            Number of items to skip for pagination (default: 0)
+
+        start_date : typing.Optional[dt.datetime]
+            Only include calls after this timestamp (inclusive)
+
+        end_date : typing.Optional[dt.datetime]
+            Only include calls before this timestamp (inclusive)
+
+        status : typing.Optional[CallStatus]
+            Filter by call status
+
+        direction : typing.Optional[CallDirection]
+            Filter by call direction
+
+        source : typing.Optional[CallSource]
+            Filter by call source (direct, scheduled, campaign)
+
+        phone_number : typing.Optional[str]
+            Filter by phone number — matches either the from or to number (E.164)
+
+        is_lead : typing.Optional[bool]
+            Filter by whether the call was triggered by a Meta lead form (true = lead-driven only)
+
+        flow_id : typing.Optional[str]
+            Filter by flow ID
+
+        contact_id : typing.Optional[str]
+            Filter by contact ID
+
+        schedule_id : typing.Optional[str]
+            Filter by schedule ID (for scheduled calls)
+
+        campaign_id : typing.Optional[str]
+            Filter by campaign ID (for campaign calls)
+
+        provider_type : typing.Optional[CallProviderType]
+            Filter by telephony provider type (channel)
+
+        search : typing.Optional[str]
+            Free-text search across the contact name and the raw from/to phone
+            numbers (case-insensitive substring). Matches calls to/from numbers that
+            were never saved as contacts.
+
+        sort_by : typing.Optional[CallSortField]
+            Field to sort results by (default: creation time)
+
+        sort_direction : typing.Optional[SortDirection]
+            Sort direction for `sortBy` (default: desc)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[CallListResponse]
+            Paginated list of calls
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "api/v1/calls",
+            method="GET",
+            params={
+                "limit": limit,
+                "offset": offset,
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "status": status,
+                "direction": direction,
+                "source": source,
+                "phoneNumber": phone_number,
+                "isLead": is_lead,
+                "flowId": flow_id,
+                "contactId": contact_id,
+                "scheduleId": schedule_id,
+                "campaignId": campaign_id,
+                "providerType": provider_type,
+                "search": search,
+                "sortBy": sort_by,
+                "sortDirection": sort_direction,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CallListResponse,
+                    parse_obj_as(
+                        type_=CallListResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def make_call(
         self,
@@ -194,300 +370,6 @@ class RawCallsClient:
                 )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def get_active_calls(
-        self,
-        *,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[CallResponse, CallListResponse]:
-        """
-        GET /api/v1/calls/active
-
-        Parameters
-        ----------
-        limit : typing.Optional[int]
-            Max items to return (1-100, default 10)
-
-        offset : typing.Optional[int]
-            Items to skip (default 0)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        SyncPager[CallResponse, CallListResponse]
-            Active calls
-        """
-        offset = offset if offset is not None else 0
-
-        _response = self._client_wrapper.httpx_client.request(
-            "api/v1/calls/active",
-            method="GET",
-            params={
-                "limit": limit,
-                "offset": offset,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _parsed_response = typing.cast(
-                    CallListResponse,
-                    parse_obj_as(
-                        type_=CallListResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                _items = _parsed_response.calls
-                _has_next = len(_items or []) > 0
-                _get_next = lambda: self.get_active_calls(
-                    limit=limit,
-                    offset=offset + len(_items or []),
-                    request_options=request_options,
-                )
-                return SyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def get_call_history(
-        self,
-        *,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        start_date: typing.Optional[dt.datetime] = None,
-        end_date: typing.Optional[dt.datetime] = None,
-        status: typing.Optional[CallStatus] = None,
-        direction: typing.Optional[CallDirection] = None,
-        source: typing.Optional[CallSource] = None,
-        phone_number: typing.Optional[str] = None,
-        is_lead: typing.Optional[bool] = None,
-        flow_id: typing.Optional[str] = None,
-        contact_id: typing.Optional[str] = None,
-        schedule_id: typing.Optional[str] = None,
-        campaign_id: typing.Optional[str] = None,
-        provider_type: typing.Optional[CallProviderType] = None,
-        search: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[CallResponse, CallListResponse]:
-        """
-        GET /api/v1/calls/history
-
-        Parameters
-        ----------
-        limit : typing.Optional[int]
-            Maximum number of items to return (default: 20, max: 100)
-
-        offset : typing.Optional[int]
-            Number of items to skip for pagination (default: 0)
-
-        start_date : typing.Optional[dt.datetime]
-            Only include calls after this timestamp (inclusive)
-
-        end_date : typing.Optional[dt.datetime]
-            Only include calls before this timestamp (inclusive)
-
-        status : typing.Optional[CallStatus]
-            Filter by call status
-
-        direction : typing.Optional[CallDirection]
-            Filter by call direction
-
-        source : typing.Optional[CallSource]
-            Filter by call source (direct, scheduled, campaign)
-
-        phone_number : typing.Optional[str]
-            Filter by phone number — matches either the from or to number (E.164)
-
-        is_lead : typing.Optional[bool]
-            Filter by whether the call was triggered by a Meta lead form (true = lead-driven only)
-
-        flow_id : typing.Optional[str]
-            Filter by flow ID
-
-        contact_id : typing.Optional[str]
-            Filter by contact ID
-
-        schedule_id : typing.Optional[str]
-            Filter by schedule ID (for scheduled calls)
-
-        campaign_id : typing.Optional[str]
-            Filter by campaign ID (for campaign calls)
-
-        provider_type : typing.Optional[CallProviderType]
-            Filter by telephony provider type (channel)
-
-        search : typing.Optional[str]
-            Free-text search across the contact name and the raw from/to phone
-            numbers (case-insensitive substring). Matches calls to/from numbers that
-            were never saved as contacts.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        SyncPager[CallResponse, CallListResponse]
-            Call history
-        """
-        offset = offset if offset is not None else 0
-
-        _response = self._client_wrapper.httpx_client.request(
-            "api/v1/calls/history",
-            method="GET",
-            params={
-                "limit": limit,
-                "offset": offset,
-                "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                "status": status,
-                "direction": direction,
-                "source": source,
-                "phoneNumber": phone_number,
-                "isLead": is_lead,
-                "flowId": flow_id,
-                "contactId": contact_id,
-                "scheduleId": schedule_id,
-                "campaignId": campaign_id,
-                "providerType": provider_type,
-                "search": search,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _parsed_response = typing.cast(
-                    CallListResponse,
-                    parse_obj_as(
-                        type_=CallListResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                _items = _parsed_response.calls
-                _has_next = len(_items or []) > 0
-                _get_next = lambda: self.get_call_history(
-                    limit=limit,
-                    offset=offset + len(_items or []),
-                    start_date=start_date,
-                    end_date=end_date,
-                    status=status,
-                    direction=direction,
-                    source=source,
-                    phone_number=phone_number,
-                    is_lead=is_lead,
-                    flow_id=flow_id,
-                    contact_id=contact_id,
-                    schedule_id=schedule_id,
-                    campaign_id=campaign_id,
-                    provider_type=provider_type,
-                    search=search,
-                    request_options=request_options,
-                )
-                return SyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         ErrorResponse,
@@ -908,7 +790,8 @@ class RawCallsClient:
         Charges for actual storage duration before deletion (billing at lifecycle end).
         Uses idempotency key to prevent double-charging if racing with retention job.
 
-        SECURITY: Verifies account access, call ownership.
+        Owner or admin only: deleting a recording destroys data the account may
+        need to keep. With an API key, the key's creator must be an owner or admin.
 
         Parameters
         ----------
@@ -1119,6 +1002,181 @@ class AsyncRawCallsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
+    async def list_calls(
+        self,
+        *,
+        limit: typing.Optional[int] = None,
+        offset: typing.Optional[int] = None,
+        start_date: typing.Optional[dt.datetime] = None,
+        end_date: typing.Optional[dt.datetime] = None,
+        status: typing.Optional[CallStatus] = None,
+        direction: typing.Optional[CallDirection] = None,
+        source: typing.Optional[CallSource] = None,
+        phone_number: typing.Optional[str] = None,
+        is_lead: typing.Optional[bool] = None,
+        flow_id: typing.Optional[str] = None,
+        contact_id: typing.Optional[str] = None,
+        schedule_id: typing.Optional[str] = None,
+        campaign_id: typing.Optional[str] = None,
+        provider_type: typing.Optional[CallProviderType] = None,
+        search: typing.Optional[str] = None,
+        sort_by: typing.Optional[CallSortField] = None,
+        sort_direction: typing.Optional[SortDirection] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[CallListResponse]:
+        """
+        Returns the account's calls, newest first, with optional filters. Use `status` to narrow to live calls (for example `in_progress`), `flowId` / `campaignId` / `contactId` to scope by resource, and `startDate` / `endDate` for a time window.
+
+        Parameters
+        ----------
+        limit : typing.Optional[int]
+            Maximum number of items to return (default: 20, max: 100)
+
+        offset : typing.Optional[int]
+            Number of items to skip for pagination (default: 0)
+
+        start_date : typing.Optional[dt.datetime]
+            Only include calls after this timestamp (inclusive)
+
+        end_date : typing.Optional[dt.datetime]
+            Only include calls before this timestamp (inclusive)
+
+        status : typing.Optional[CallStatus]
+            Filter by call status
+
+        direction : typing.Optional[CallDirection]
+            Filter by call direction
+
+        source : typing.Optional[CallSource]
+            Filter by call source (direct, scheduled, campaign)
+
+        phone_number : typing.Optional[str]
+            Filter by phone number — matches either the from or to number (E.164)
+
+        is_lead : typing.Optional[bool]
+            Filter by whether the call was triggered by a Meta lead form (true = lead-driven only)
+
+        flow_id : typing.Optional[str]
+            Filter by flow ID
+
+        contact_id : typing.Optional[str]
+            Filter by contact ID
+
+        schedule_id : typing.Optional[str]
+            Filter by schedule ID (for scheduled calls)
+
+        campaign_id : typing.Optional[str]
+            Filter by campaign ID (for campaign calls)
+
+        provider_type : typing.Optional[CallProviderType]
+            Filter by telephony provider type (channel)
+
+        search : typing.Optional[str]
+            Free-text search across the contact name and the raw from/to phone
+            numbers (case-insensitive substring). Matches calls to/from numbers that
+            were never saved as contacts.
+
+        sort_by : typing.Optional[CallSortField]
+            Field to sort results by (default: creation time)
+
+        sort_direction : typing.Optional[SortDirection]
+            Sort direction for `sortBy` (default: desc)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[CallListResponse]
+            Paginated list of calls
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "api/v1/calls",
+            method="GET",
+            params={
+                "limit": limit,
+                "offset": offset,
+                "startDate": serialize_datetime(start_date) if start_date is not None else None,
+                "endDate": serialize_datetime(end_date) if end_date is not None else None,
+                "status": status,
+                "direction": direction,
+                "source": source,
+                "phoneNumber": phone_number,
+                "isLead": is_lead,
+                "flowId": flow_id,
+                "contactId": contact_id,
+                "scheduleId": schedule_id,
+                "campaignId": campaign_id,
+                "providerType": provider_type,
+                "search": search,
+                "sortBy": sort_by,
+                "sortDirection": sort_direction,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CallListResponse,
+                    parse_obj_as(
+                        type_=CallListResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
     async def make_call(
         self,
         *,
@@ -1270,306 +1328,6 @@ class AsyncRawCallsClient:
                 )
             if _response.status_code == 422:
                 raise UnprocessableEntityError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def get_active_calls(
-        self,
-        *,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[CallResponse, CallListResponse]:
-        """
-        GET /api/v1/calls/active
-
-        Parameters
-        ----------
-        limit : typing.Optional[int]
-            Max items to return (1-100, default 10)
-
-        offset : typing.Optional[int]
-            Items to skip (default 0)
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncPager[CallResponse, CallListResponse]
-            Active calls
-        """
-        offset = offset if offset is not None else 0
-
-        _response = await self._client_wrapper.httpx_client.request(
-            "api/v1/calls/active",
-            method="GET",
-            params={
-                "limit": limit,
-                "offset": offset,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _parsed_response = typing.cast(
-                    CallListResponse,
-                    parse_obj_as(
-                        type_=CallListResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                _items = _parsed_response.calls
-                _has_next = len(_items or []) > 0
-
-                async def _get_next():
-                    return await self.get_active_calls(
-                        limit=limit,
-                        offset=offset + len(_items or []),
-                        request_options=request_options,
-                    )
-
-                return AsyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def get_call_history(
-        self,
-        *,
-        limit: typing.Optional[int] = None,
-        offset: typing.Optional[int] = None,
-        start_date: typing.Optional[dt.datetime] = None,
-        end_date: typing.Optional[dt.datetime] = None,
-        status: typing.Optional[CallStatus] = None,
-        direction: typing.Optional[CallDirection] = None,
-        source: typing.Optional[CallSource] = None,
-        phone_number: typing.Optional[str] = None,
-        is_lead: typing.Optional[bool] = None,
-        flow_id: typing.Optional[str] = None,
-        contact_id: typing.Optional[str] = None,
-        schedule_id: typing.Optional[str] = None,
-        campaign_id: typing.Optional[str] = None,
-        provider_type: typing.Optional[CallProviderType] = None,
-        search: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[CallResponse, CallListResponse]:
-        """
-        GET /api/v1/calls/history
-
-        Parameters
-        ----------
-        limit : typing.Optional[int]
-            Maximum number of items to return (default: 20, max: 100)
-
-        offset : typing.Optional[int]
-            Number of items to skip for pagination (default: 0)
-
-        start_date : typing.Optional[dt.datetime]
-            Only include calls after this timestamp (inclusive)
-
-        end_date : typing.Optional[dt.datetime]
-            Only include calls before this timestamp (inclusive)
-
-        status : typing.Optional[CallStatus]
-            Filter by call status
-
-        direction : typing.Optional[CallDirection]
-            Filter by call direction
-
-        source : typing.Optional[CallSource]
-            Filter by call source (direct, scheduled, campaign)
-
-        phone_number : typing.Optional[str]
-            Filter by phone number — matches either the from or to number (E.164)
-
-        is_lead : typing.Optional[bool]
-            Filter by whether the call was triggered by a Meta lead form (true = lead-driven only)
-
-        flow_id : typing.Optional[str]
-            Filter by flow ID
-
-        contact_id : typing.Optional[str]
-            Filter by contact ID
-
-        schedule_id : typing.Optional[str]
-            Filter by schedule ID (for scheduled calls)
-
-        campaign_id : typing.Optional[str]
-            Filter by campaign ID (for campaign calls)
-
-        provider_type : typing.Optional[CallProviderType]
-            Filter by telephony provider type (channel)
-
-        search : typing.Optional[str]
-            Free-text search across the contact name and the raw from/to phone
-            numbers (case-insensitive substring). Matches calls to/from numbers that
-            were never saved as contacts.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncPager[CallResponse, CallListResponse]
-            Call history
-        """
-        offset = offset if offset is not None else 0
-
-        _response = await self._client_wrapper.httpx_client.request(
-            "api/v1/calls/history",
-            method="GET",
-            params={
-                "limit": limit,
-                "offset": offset,
-                "startDate": serialize_datetime(start_date) if start_date is not None else None,
-                "endDate": serialize_datetime(end_date) if end_date is not None else None,
-                "status": status,
-                "direction": direction,
-                "source": source,
-                "phoneNumber": phone_number,
-                "isLead": is_lead,
-                "flowId": flow_id,
-                "contactId": contact_id,
-                "scheduleId": schedule_id,
-                "campaignId": campaign_id,
-                "providerType": provider_type,
-                "search": search,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _parsed_response = typing.cast(
-                    CallListResponse,
-                    parse_obj_as(
-                        type_=CallListResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                _items = _parsed_response.calls
-                _has_next = len(_items or []) > 0
-
-                async def _get_next():
-                    return await self.get_call_history(
-                        limit=limit,
-                        offset=offset + len(_items or []),
-                        start_date=start_date,
-                        end_date=end_date,
-                        status=status,
-                        direction=direction,
-                        source=source,
-                        phone_number=phone_number,
-                        is_lead=is_lead,
-                        flow_id=flow_id,
-                        contact_id=contact_id,
-                        schedule_id=schedule_id,
-                        campaign_id=campaign_id,
-                        provider_type=provider_type,
-                        search=search,
-                        request_options=request_options,
-                    )
-
-                return AsyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         ErrorResponse,
@@ -1990,7 +1748,8 @@ class AsyncRawCallsClient:
         Charges for actual storage duration before deletion (billing at lifecycle end).
         Uses idempotency key to prevent double-charging if racing with retention job.
 
-        SECURITY: Verifies account access, call ownership.
+        Owner or admin only: deleting a recording destroys data the account may
+        need to keep. With an API key, the key's creator must be an owner or admin.
 
         Parameters
         ----------

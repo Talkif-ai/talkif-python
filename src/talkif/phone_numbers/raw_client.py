@@ -18,7 +18,7 @@ from ..errors.not_found_error import NotFoundError
 from ..errors.payment_required_error import PaymentRequiredError
 from ..errors.too_many_requests_error import TooManyRequestsError
 from ..errors.unauthorized_error import UnauthorizedError
-from ..types.available_phone_number import AvailablePhoneNumber
+from ..types.available_numbers_response import AvailableNumbersResponse
 from ..types.error_response import ErrorResponse
 from ..types.phone_number_list_response import PhoneNumberListResponse
 from ..types.phone_number_pricing import PhoneNumberPricing
@@ -139,9 +139,25 @@ class RawPhoneNumbersClient:
         number_type: typing.Optional[str] = None,
         area_code: typing.Optional[str] = None,
         contains: typing.Optional[str] = None,
+        in_postal_code: typing.Optional[str] = None,
+        in_region: typing.Optional[str] = None,
+        in_rate_center: typing.Optional[str] = None,
+        in_lata: typing.Optional[str] = None,
+        in_locality: typing.Optional[str] = None,
+        near_number: typing.Optional[str] = None,
+        near_lat_long: typing.Optional[str] = None,
+        distance: typing.Optional[int] = None,
+        sms_enabled: typing.Optional[bool] = None,
+        mms_enabled: typing.Optional[bool] = None,
+        voice_enabled: typing.Optional[bool] = None,
+        fax_enabled: typing.Optional[bool] = None,
+        beta: typing.Optional[bool] = None,
+        exclude_all_address_required: typing.Optional[bool] = None,
+        exclude_local_address_required: typing.Optional[bool] = None,
+        exclude_foreign_address_required: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[typing.List[AvailablePhoneNumber]]:
+    ) -> HttpResponse[AvailableNumbersResponse]:
         """
         GET /api/v1/phone/numbers/twilio/available
 
@@ -172,30 +188,78 @@ class RawPhoneNumbersClient:
         Parameters
         ----------
         provider_id : str
-            Provider ID
+            Provider ID (required)
 
         country_code : str
-            ISO country code (e.g., US, GB)
+            ISO country code (required, e.g. "US", "GB", "CA")
 
         number_type : typing.Optional[str]
-            Number type: local, toll_free, or mobile
+            Number type: "local", "toll_free", or "mobile" (default: "local")
 
         area_code : typing.Optional[str]
             Area code filter (US/Canada only)
 
         contains : typing.Optional[str]
-            Pattern to match in the phone number
+            Pattern to match in the phone number (supports wildcards: *, %)
+
+        in_postal_code : typing.Optional[str]
+            Filter by postal/ZIP code (US/Canada only)
+
+        in_region : typing.Optional[str]
+            Filter by state/region (US/Canada only)
+
+        in_rate_center : typing.Optional[str]
+            Filter by rate center (US/Canada only, requires in_lata)
+
+        in_lata : typing.Optional[str]
+            Filter by LATA (US/Canada only)
+
+        in_locality : typing.Optional[str]
+            Filter by locality/city
+
+        near_number : typing.Optional[str]
+            Find numbers geographically close to this phone number
+
+        near_lat_long : typing.Optional[str]
+            Find numbers near lat,long (e.g. "37.7749,-122.4194")
+
+        distance : typing.Optional[int]
+            Distance radius in miles for geographic searches (default: 25, max: 500)
+
+        sms_enabled : typing.Optional[bool]
+            Filter for SMS-capable numbers
+
+        mms_enabled : typing.Optional[bool]
+            Filter for MMS-capable numbers
+
+        voice_enabled : typing.Optional[bool]
+            Filter for voice-capable numbers
+
+        fax_enabled : typing.Optional[bool]
+            Filter for fax-capable numbers
+
+        beta : typing.Optional[bool]
+            Filter for beta numbers (new to Twilio)
+
+        exclude_all_address_required : typing.Optional[bool]
+            Exclude numbers that require any address
+
+        exclude_local_address_required : typing.Optional[bool]
+            Exclude numbers that require a local address
+
+        exclude_foreign_address_required : typing.Optional[bool]
+            Exclude numbers that require a foreign address
 
         limit : typing.Optional[int]
-            Max results (default: 20, max: 1000)
+            Maximum number of results (default: 20, max: 1000)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[typing.List[AvailablePhoneNumber]]
-            List of available numbers
+        HttpResponse[AvailableNumbersResponse]
+            Available numbers and the search that produced them
         """
         _response = self._client_wrapper.httpx_client.request(
             "api/v1/phone/numbers/twilio/available",
@@ -206,6 +270,22 @@ class RawPhoneNumbersClient:
                 "numberType": number_type,
                 "areaCode": area_code,
                 "contains": contains,
+                "inPostalCode": in_postal_code,
+                "inRegion": in_region,
+                "inRateCenter": in_rate_center,
+                "inLata": in_lata,
+                "inLocality": in_locality,
+                "nearNumber": near_number,
+                "nearLatLong": near_lat_long,
+                "distance": distance,
+                "smsEnabled": sms_enabled,
+                "mmsEnabled": mms_enabled,
+                "voiceEnabled": voice_enabled,
+                "faxEnabled": fax_enabled,
+                "beta": beta,
+                "excludeAllAddressRequired": exclude_all_address_required,
+                "excludeLocalAddressRequired": exclude_local_address_required,
+                "excludeForeignAddressRequired": exclude_foreign_address_required,
                 "limit": limit,
             },
             request_options=request_options,
@@ -213,9 +293,9 @@ class RawPhoneNumbersClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    typing.List[AvailablePhoneNumber],
+                    AvailableNumbersResponse,
                     parse_obj_as(
-                        type_=typing.List[AvailablePhoneNumber],  # type: ignore
+                        type_=AvailableNumbersResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1231,9 +1311,25 @@ class AsyncRawPhoneNumbersClient:
         number_type: typing.Optional[str] = None,
         area_code: typing.Optional[str] = None,
         contains: typing.Optional[str] = None,
+        in_postal_code: typing.Optional[str] = None,
+        in_region: typing.Optional[str] = None,
+        in_rate_center: typing.Optional[str] = None,
+        in_lata: typing.Optional[str] = None,
+        in_locality: typing.Optional[str] = None,
+        near_number: typing.Optional[str] = None,
+        near_lat_long: typing.Optional[str] = None,
+        distance: typing.Optional[int] = None,
+        sms_enabled: typing.Optional[bool] = None,
+        mms_enabled: typing.Optional[bool] = None,
+        voice_enabled: typing.Optional[bool] = None,
+        fax_enabled: typing.Optional[bool] = None,
+        beta: typing.Optional[bool] = None,
+        exclude_all_address_required: typing.Optional[bool] = None,
+        exclude_local_address_required: typing.Optional[bool] = None,
+        exclude_foreign_address_required: typing.Optional[bool] = None,
         limit: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[typing.List[AvailablePhoneNumber]]:
+    ) -> AsyncHttpResponse[AvailableNumbersResponse]:
         """
         GET /api/v1/phone/numbers/twilio/available
 
@@ -1264,30 +1360,78 @@ class AsyncRawPhoneNumbersClient:
         Parameters
         ----------
         provider_id : str
-            Provider ID
+            Provider ID (required)
 
         country_code : str
-            ISO country code (e.g., US, GB)
+            ISO country code (required, e.g. "US", "GB", "CA")
 
         number_type : typing.Optional[str]
-            Number type: local, toll_free, or mobile
+            Number type: "local", "toll_free", or "mobile" (default: "local")
 
         area_code : typing.Optional[str]
             Area code filter (US/Canada only)
 
         contains : typing.Optional[str]
-            Pattern to match in the phone number
+            Pattern to match in the phone number (supports wildcards: *, %)
+
+        in_postal_code : typing.Optional[str]
+            Filter by postal/ZIP code (US/Canada only)
+
+        in_region : typing.Optional[str]
+            Filter by state/region (US/Canada only)
+
+        in_rate_center : typing.Optional[str]
+            Filter by rate center (US/Canada only, requires in_lata)
+
+        in_lata : typing.Optional[str]
+            Filter by LATA (US/Canada only)
+
+        in_locality : typing.Optional[str]
+            Filter by locality/city
+
+        near_number : typing.Optional[str]
+            Find numbers geographically close to this phone number
+
+        near_lat_long : typing.Optional[str]
+            Find numbers near lat,long (e.g. "37.7749,-122.4194")
+
+        distance : typing.Optional[int]
+            Distance radius in miles for geographic searches (default: 25, max: 500)
+
+        sms_enabled : typing.Optional[bool]
+            Filter for SMS-capable numbers
+
+        mms_enabled : typing.Optional[bool]
+            Filter for MMS-capable numbers
+
+        voice_enabled : typing.Optional[bool]
+            Filter for voice-capable numbers
+
+        fax_enabled : typing.Optional[bool]
+            Filter for fax-capable numbers
+
+        beta : typing.Optional[bool]
+            Filter for beta numbers (new to Twilio)
+
+        exclude_all_address_required : typing.Optional[bool]
+            Exclude numbers that require any address
+
+        exclude_local_address_required : typing.Optional[bool]
+            Exclude numbers that require a local address
+
+        exclude_foreign_address_required : typing.Optional[bool]
+            Exclude numbers that require a foreign address
 
         limit : typing.Optional[int]
-            Max results (default: 20, max: 1000)
+            Maximum number of results (default: 20, max: 1000)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[typing.List[AvailablePhoneNumber]]
-            List of available numbers
+        AsyncHttpResponse[AvailableNumbersResponse]
+            Available numbers and the search that produced them
         """
         _response = await self._client_wrapper.httpx_client.request(
             "api/v1/phone/numbers/twilio/available",
@@ -1298,6 +1442,22 @@ class AsyncRawPhoneNumbersClient:
                 "numberType": number_type,
                 "areaCode": area_code,
                 "contains": contains,
+                "inPostalCode": in_postal_code,
+                "inRegion": in_region,
+                "inRateCenter": in_rate_center,
+                "inLata": in_lata,
+                "inLocality": in_locality,
+                "nearNumber": near_number,
+                "nearLatLong": near_lat_long,
+                "distance": distance,
+                "smsEnabled": sms_enabled,
+                "mmsEnabled": mms_enabled,
+                "voiceEnabled": voice_enabled,
+                "faxEnabled": fax_enabled,
+                "beta": beta,
+                "excludeAllAddressRequired": exclude_all_address_required,
+                "excludeLocalAddressRequired": exclude_local_address_required,
+                "excludeForeignAddressRequired": exclude_foreign_address_required,
                 "limit": limit,
             },
             request_options=request_options,
@@ -1305,9 +1465,9 @@ class AsyncRawPhoneNumbersClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    typing.List[AvailablePhoneNumber],
+                    AvailableNumbersResponse,
                     parse_obj_as(
-                        type_=typing.List[AvailablePhoneNumber],  # type: ignore
+                        type_=AvailableNumbersResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
