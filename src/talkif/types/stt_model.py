@@ -7,6 +7,7 @@ import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
 from .language_info import LanguageInfo
+from .model_deprecation import ModelDeprecation
 from .stt_capabilities import SttCapabilities
 from .stt_pricing import SttPricing
 
@@ -21,6 +22,7 @@ class SttModel(UniversalBaseModel):
     Model capabilities
     """
 
+    deprecation: typing.Optional[ModelDeprecation] = None
     description: typing.Optional[str] = pydantic.Field(default=None)
     """
     Model description

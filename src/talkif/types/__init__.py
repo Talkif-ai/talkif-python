@@ -165,6 +165,7 @@ if typing.TYPE_CHECKING:
     from .member_tag_usage import MemberTagUsage
     from .member_tags_response import MemberTagsResponse
     from .member_weekly_hours import MemberWeeklyHours
+    from .model_deprecation import ModelDeprecation
     from .paginated_response import PaginatedResponse
     from .pagination_meta import PaginationMeta
     from .permissions_response import PermissionsResponse
@@ -405,6 +406,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "MemberTagUsage": ".member_tag_usage",
     "MemberTagsResponse": ".member_tags_response",
     "MemberWeeklyHours": ".member_weekly_hours",
+    "ModelDeprecation": ".model_deprecation",
     "PaginatedResponse": ".paginated_response",
     "PaginationMeta": ".pagination_meta",
     "PermissionsResponse": ".permissions_response",
@@ -669,6 +671,7 @@ __all__ = [
     "MemberTagUsage",
     "MemberTagsResponse",
     "MemberWeeklyHours",
+    "ModelDeprecation",
     "PaginatedResponse",
     "PaginationMeta",
     "PermissionsResponse",
