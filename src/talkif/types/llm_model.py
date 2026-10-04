@@ -8,6 +8,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
 from .llm_capabilities import LlmCapabilities
 from .llm_pricing import LlmPricing
+from .model_deprecation import ModelDeprecation
 
 
 class LlmModel(UniversalBaseModel):
@@ -29,6 +30,7 @@ class LlmModel(UniversalBaseModel):
     Context window size (tokens)
     """
 
+    deprecation: typing.Optional[ModelDeprecation] = None
     description: typing.Optional[str] = pydantic.Field(default=None)
     """
     Model description

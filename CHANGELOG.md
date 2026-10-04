@@ -10,6 +10,15 @@ version is below 1.0.0, a minor release may contain breaking changes; they are l
 
 ## [Unreleased]
 
+## [0.3.0] — 2026-10-04
+
+### Added
+
+- Models: `deprecation` on `LlmModel`, `SttModel` and `TtsModel` — a `ModelDeprecation` with
+  `retires_on` and `replaced_by` when a model is scheduled for retirement. Until that date the
+  model works as before; from that date calls on it run on the named replacement from the same
+  provider. See [When a model is retired](https://docs.talkif.ai/build/choose-models-and-voices#when-a-model-is-retired).
+
 ## [0.2.0] — 2026-10-02
 
 ### Added
